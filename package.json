@@ -1,0 +1,32 @@
+{
+  "name": "weather-cli",
+  "version": "1.0.0",
+  "description": "A command-line interface application to fetch and display weather information.",
+  "main": "dist/app.js",
+  "bin": {
+    "weather-cli": "./dist/app.js"
+  },
+  "scripts": {
+    "start": "ts-node src/app.ts",
+    "build": "tsc",
+    "dev": "ts-node src/app.ts",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "commander": "^11.0.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "weather",
+    "cli",
+    "typescript"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
