@@ -1,32 +1,53 @@
 {
-  "name": "weather-cli",
+  "name": "wait-weather",
   "version": "1.0.0",
-  "description": "A command-line interface application to fetch and display weather information.",
-  "main": "dist/app.js",
+  "description": "WAIT - Weather App In Terminal - A TUI application to fetch and display weather information.",
+  "main": "dist/tui-app.js",
   "bin": {
-    "weather-cli": "./dist/app.js"
+    "wait": "./dist/tui-app.js",
+    "wait-cli": "./dist/app.js"
   },
   "scripts": {
-    "start": "ts-node src/app.ts",
+    "start": "ts-node src/tui-app.ts",
+    "start:cli": "ts-node src/app.ts",
     "build": "tsc",
-    "dev": "ts-node src/app.ts",
+    "build:pkg": "tsc && pkg package.json",
+    "dev": "ts-node src/tui-app.ts",
+    "dev:cli": "ts-node src/app.ts",
     "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
     "axios": "^1.6.0",
+    "blessed": "^0.1.81",
     "commander": "^11.0.0",
     "dotenv": "^16.3.1"
   },
   "devDependencies": {
+    "@types/blessed": "^0.1.21",
     "@types/node": "^20.0.0",
+    "pkg": "^5.8.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.0"
   },
   "keywords": [
     "weather",
+    "tui",
     "cli",
-    "typescript"
+    "typescript",
+    "terminal"
   ],
   "author": "Your Name",
-  "license": "MIT"
+  "license": "MIT",
+  "pkg": {
+    "scripts": [
+      "dist/**/*.js"
+    ],
+    "assets": [],
+    "targets": [
+      "node18-win-x64",
+      "node18-macos-x64",
+      "node18-linux-x64"
+    ],
+    "outputPath": "releases"
+  }
 }

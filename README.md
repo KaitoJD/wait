@@ -8,7 +8,7 @@
 
 </div>
 
-A modern, well-structured command-line interface (CLI) weather app. This is the product participating in the Summer of Making 2025 program.
+A modern, interactive **TUI (Text User Interface)** weather application with CLI fallback support. Features an intuitive menu-driven interface for seamless weather information access. This is the product participating in the Summer of Making 2025 program.
 
 ## Documentation
 
@@ -21,12 +21,58 @@ A modern, well-structured command-line interface (CLI) weather app. This is the 
 
 ## Features
 
+### 🎯 TUI (Text User Interface) Mode
+- **Interactive Menu System**: Navigate through options with arrow keys
+- **Real-time Display**: Weather information updates in dedicated panels  
+- **Keyboard Navigation**: ESC to go back, Enter to select, q to quit
+- **Beautiful ASCII Interface**: Clean, bordered layout with emoji indicators
+- **Location Management**: Easy location entry with input validation
+
+### ⚡ CLI Mode (Traditional)
 - **Current Weather**: Get real-time weather information including temperature, humidity, wind speed, and more
 - **Weather Forecast**: View detailed forecasts for up to 10 days
-- **Beautiful Output**: Clean, emoji-enhanced console formatting for easy reading
-- **Error Handling**: Comprehensive error messages with helpful suggestions
+- **Command-line Arguments**: Direct access via terminal commands
+
+### 🚀 Cross-Platform Executable
+- **Standalone Executables**: No dependencies required after build
+- **Multi-platform Support**: Windows, macOS, and Linux binaries
+- **Single File Distribution**: Easy deployment and sharing
+
+### 🛠️ Technical Features
 - **TypeScript**: Fully typed for better development experience and code reliability
-- **Extensible Architecture**: Well-organized code structure for easy maintenance and feature additions
+- **Error Handling**: Comprehensive error messages with helpful suggestions  
+- **Extensible Architecture**: Well-organized code structure for easy maintenance
+- **Beautiful Output**: Clean, emoji-enhanced formatting for easy reading
+
+## 🚀 Quick Start
+
+### TUI Mode (Interactive Interface)
+```bash
+# Development
+npm run dev
+
+# Or use built executable
+./releases/wait-weather-linux
+```
+
+### CLI Mode (Command Line)  
+```bash
+# Development
+npm run dev:cli
+
+# Direct commands
+wait-cli current "London"
+wait-cli forecast "New York" 5
+```
+
+### Building Executables
+```bash
+# Create platform-specific executables
+./build-executable.sh
+
+# Or manually
+npm run build:pkg
+```
 
 ## API Integration
 
