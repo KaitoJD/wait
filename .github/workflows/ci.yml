@@ -30,7 +30,7 @@ jobs:
             echo "Running linting..."
             npm run lint
           else
-            echo "ℹNo linting script found, skipping..."
+            echo "No linting script found, skipping..."
           fi
         continue-on-error: true
 
