@@ -6,7 +6,7 @@
    - [Scripts](#scripts)
    - [Development Workflow](#development-workflow)
 2. [Adding New Features](#adding-new-features)
-   - [Adding New Commands](#adding-new-commands)
+   - [Adding New UI Components](#adding-new-ui-components)
    - [Adding New Services](#adding-new-services)
    - [Adding New Utilities](#adding-new-utilities)
 3. [Code Style Guidelines](#code-style-guidelines)
@@ -38,39 +38,55 @@
 ### Development Workflow
 
 1. Make changes to TypeScript files in `src/`
-2. Test changes: `npm run dev -- current "test location"`
-3. Build and verify: `npm run build`
-4. Run built version: `node dist/app.js current "test location"`
+2. Test changes: `npm run dev`
+3. Navigate the TUI interface to test functionality
+4. Build and verify: `npm run build`
+5. Run built version: `node dist/app.js`
 
 ## Adding New Features
 
 The application is designed for extensibility with a clean architecture:
 
-### Adding New Commands
+### Adding New UI Components
 
-1. **Create command file** in `src/commands/`:
+The TUI application uses blessed for terminal interface components:
+
+1. **Create component file** in `src/ui/components/`:
 ```typescript
-// src/commands/historical.ts
-export class HistoricalCommand {
-    async execute(location: string, date: string): Promise<void> {
+// src/ui/components/historical-view.ts
+import blessed from 'blessed';
+
+export class HistoricalView {
+    private element: blessed.Widgets.BoxElement;
+
+    constructor(parent: blessed.Widgets.Screen) {
+        this.element = blessed.box({
+            parent,
+            label: ' Historical Weather ',
+            // ... component configuration
+        });
+    }
+
+    public render(data: any): void {
         // Implementation
     }
 }
 ```
 
-2. **Register command** in `src/commands/index.ts`:
+2. **Add to component exports** in `src/ui/components/index.ts`:
 ```typescript
-import { HistoricalCommand } from './historical';
+export { HistoricalView } from './historical-view';
+```
 
-const historicalCommand = new HistoricalCommand();
-program
-    .command('historical')
-    .description('Get historical weather data')
-    .argument('<location>', 'Location')
-    .argument('<date>', 'Date (YYYY-MM-DD)')
-    .action(async (location, date) => {
-        await historicalCommand.execute(location, date);
-    });
+3. **Add menu option** in `src/ui/components/menu.ts` and handle in `src/ui/event-manager.ts`:
+```typescript
+// Add to menu items array
+{ label: 'Historical Weather', key: 'h' }
+
+// Add handler in event-manager.ts
+case 'h':
+    await this.handleHistorical();
+    break;
 ```
 
 ### Adding New Services

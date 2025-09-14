@@ -1,6 +1,6 @@
 # Contributing Guide
 
-Thank you for your interest in contributing to Weather CLI! This guide will help you get started.
+Thank you for your interest in contributing to WAIT (Weather App Interactive Terminal)! This guide will help you get started.
 
 ## Table of Contents
 
@@ -16,7 +16,8 @@ Thank you for your interest in contributing to Weather CLI! This guide will help
    - [Documentation](#documentation)
    - [Performance Improvements](#performance-improvements)
 4. [Adding New Features](#adding-new-features)
-   - [New Commands](#new-commands)
+   - [New UI Components](#new-ui-components)
+   - [New Menu Items](#new-menu-items)
    - [New Services](#new-services)
    - [New Utilities](#new-utilities)
 5. [Code Review Process](#code-review-process)
@@ -51,8 +52,8 @@ Thank you for your interest in contributing to Weather CLI! This guide will help
 1. **Fork the repository** on GitHub
 2. **Clone your fork**:
    ```bash
-   git clone https://github.com/yourusername/weather-cli.git
-   cd weather-cli
+   git clone https://github.com/yourusername/wait.git
+   cd wait
    ```
 3. **Install dependencies**:
    ```bash
@@ -78,7 +79,8 @@ Thank you for your interest in contributing to Weather CLI! This guide will help
 3. **Test your changes**:
    ```bash
    npm run build
-   npm run dev -- current "London"  # Test functionality
+   npm run dev  # Test the TUI interface
+   # Use arrow keys to navigate and test functionality
    ```
 
 4. **Commit your changes**:
@@ -117,7 +119,7 @@ Thank you for your interest in contributing to Weather CLI! This guide will help
 - Test your changes manually with various inputs
 - Ensure error cases are handled properly
 - Test with different location formats
-- Verify help commands work correctly
+- Verify navigation and keyboard shortcuts work correctly
 
 ## Types of Contributions
 
@@ -148,12 +150,18 @@ Examples of welcome features:
 
 ## Adding New Features
 
-### New Commands
-1. Create command class in `src/commands/`
-2. Implement `execute()` method
-3. Add proper error handling
-4. Register in `src/commands/index.ts`
+### New UI Components
+1. Create component in `src/ui/components/`
+2. Implement proper blessed widget integration
+3. Add event handling and keyboard navigation
+4. Register in `src/ui/components/index.ts`
 5. Add documentation and examples
+
+### New Menu Items
+1. Update `src/ui/components/menu.ts` to add new options
+2. Add corresponding event handlers in `src/ui/event-manager.ts`
+3. Ensure proper navigation and state management
+4. Test keyboard interactions
 
 ### New Services
 1. Create service in `src/services/`
@@ -255,4 +263,4 @@ If you need help:
 - Open a discussion issue
 - Ask questions in PR comments
 
-Thank you for contributing to Weather CLI!
+Thank you for contributing to WAIT!

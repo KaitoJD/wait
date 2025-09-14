@@ -1,292 +1,466 @@
-# Examples and Output
+# WAIT - Examples and Walkthroughs
 
-This document shows example commands and their expected output formats.
+This document shows real-world usage examples and expected outputs for WAIT (Weather App In Terminal).
 
 ## Table of Contents
 
-1. [Wrapper Script Examples](#wrapper-script-examples)
-   - [First Time Setup](#first-time-setup)
-2. [Current Weather Examples](#current-weather-examples)
-   - [Basic Current Weather](#basic-current-weather)
-   - [International Location](#international-location)
-3. [Weather Forecast Examples](#weather-forecast-examples)
-   - [Default 3-Day Forecast](#default-3-day-forecast)
-   - [Custom Duration Forecast](#custom-duration-forecast)
-4. [Error Examples](#error-examples)
-   - [Invalid Location](#invalid-location)
-   - [Location Not Found](#location-not-found)
-   - [Invalid Forecast Days](#invalid-forecast-days)
-   - [Missing API Key](#missing-api-key)
-5. [Help Command Examples](#help-command-examples)
-   - [General Help](#general-help)
-   - [Command-Specific Help](#command-specific-help)
-6. [Location Format Examples](#location-format-examples)
-   - [Successful Location Formats](#successful-location-formats)
-   - [Problematic Location Formats](#problematic-location-formats)
+1. [Getting Started Walkthrough](#getting-started-walkthrough)
+2. [Location Entry Examples](#location-entry-examples)
+3. [Current Weather Examples](#current-weather-examples)
+4. [Weather Forecast Examples](#weather-forecast-examples)
+5. [Settings and Configuration](#settings-and-configuration)
+6. [Error Scenarios](#error-scenarios)
+7. [Advanced Usage Patterns](#advanced-usage-patterns)
+8. [Troubleshooting Examples](#troubleshooting-examples)
 
 ---
 
-## Wrapper Script Examples
+## Getting Started Walkthrough
 
-### First Time Setup
+### First Run Experience
+
+**Step 1: Launch WAIT**
 ```bash
-# Linux/macOS
-./weather.sh setup
-
-# Windows
-weather.bat setup
+./wait-linux
 ```
 
-**Output:**
+**Expected Interface:**
 ```
-[INFO] Setting up Weather CLI...
-[INFO] Installing dependencies...
-✓ Dependencies installed successfully
-✓ Created .env file from .env.example
-⚠ Please edit .env file and add your WEATHER_API_KEY
-  Get a free API key at: https://www.weatherapi.com/
-[INFO] Building TypeScript project...
-✓ Project built successfully
-✓ Setup complete!
+┌─────────────────────────────────────────┐
+│        WAIT - Weather App In Terminal    │
+├─────────────────────────────────────────┤
+│ Main Menu          │ Weather Information │
+│                    │                     │
+│ 1. Enter Location  │ No weather data to  │
+│ 2. Current Weather │ display.            │
+│ 3. Weather Forecast│                     │
+│ 4. Settings        │ Please select       │
+│ 5. Exit            │ "Enter Location"    │
+│                    │ from the menu to    │
+│                    │ set your location.  │
+├─────────────────────────────────────────┤
+│ Press ↑/↓ to navigate, Enter to select   │
+└─────────────────────────────────────────┘
+```
 
-Next steps:
-1. Edit .env file and add your WeatherAPI.com API key
-2. Test with: ./weather.sh current "London"
+**Step 2: Set Location**
+- Press `↓` to highlight "1. Enter Location"
+- Press `Enter` to select
+
+**Location Input Dialog:**
 ```
+┌─────────────────────────────────────────┐
+│        WAIT - Weather App In Terminal    │
+├─────────────────────────────────────────┤
+│                                         │
+│              ┌─ Enter Location ─┐       │
+│              │ London, UK       │       │
+│              └─────────────────┘       │
+│                                         │
+├─────────────────────────────────────────┤
+│ Type location and press Enter to confirm │
+└─────────────────────────────────────────┘
+```
+
+**Step 3: Get Weather**
+- Type "London, UK" and press `Enter`
+- Navigate to "2. Current Weather"
+- Press `Enter` to view weather
+
+---
+
+## Location Entry Examples
+
+### Successful Location Formats
+
+#### Major Cities (Simple)
+**Input:** `London`
+**Result:** ✅ Finds London, England, United Kingdom
+
+**Input:** `Tokyo`
+**Result:** ✅ Finds Tokyo, Japan
+
+#### US Cities with State
+**Input:** `Austin, TX`
+**Result:** ✅ Finds Austin, Texas, United States
+
+**Input:** `Portland, OR`
+**Result:** ✅ Finds Portland, Oregon (not Maine)
+
+#### International Cities
+**Input:** `Paris, France`
+**Result:** ✅ Finds Paris, France (not Paris, Texas)
+
+**Input:** `Sydney, Australia`
+**Result:** ✅ Finds Sydney, New South Wales, Australia
+
+#### Coordinates
+**Input:** `40.7128,-74.0060`
+**Result:** ✅ Finds New York City area
+
+### Location Entry Flow
+```
+Main Menu → Select "1. Enter Location" → Type Location → Press Enter → Return to Menu
+```
+
+**Visual Flow:**
+1. **Menu Selection:**
+   ```
+   │ > 1. Enter Location  │
+   │   2. Current Weather │
+   ```
+
+2. **Input Dialog:**
+   ```
+   ┌─ Enter Location ─┐
+   │ London          │  ← User typing
+   └─────────────────┘
+   ```
+
+3. **Confirmation:**
+   ```
+   │ Success: Location set to: London, England, UK │
+   ```
+
+---
 
 ## Current Weather Examples
 
-### Basic Current Weather
-```bash
-# Using wrapper script (Linux/macOS)
-./weather.sh current "London"
+### London Weather Display
+**Navigation:** Menu → 2. Current Weather
 
-# Using wrapper script (Windows)
-weather.bat current "London"
-
-# Using npm directly
-npm run dev current "London"
+**Expected Output:**
 ```
-
-**Output:**
-```
-[10:10:14 PM] ℹ️ Fetching current weather for London...
-🌤️  Weather Information for London, England, United Kingdom
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🌡️  Temperature: 15°C (feels like 13°C)
-☁️  Condition: Partly cloudy
-💧 Humidity: 72%
-💨 Wind Speed: 11 km/h
-👁️  Visibility: 10 km
-🔘 Pressure: 1013 mb
-```
-
-### International Location
-```bash
-npm run dev current "Tokyo, Japan"
+┌─────────────────────────────────────────┐
+│        WAIT - Weather App In Terminal    │
+├─────────────────────────────────────────┤
+│ Main Menu          │ Weather Information │
+│                    │                     │
+│ 1. Enter Location  │ Location: London,   │
+│ 2. Current Weather │ England, United     │
+│ 3. Weather Forecast│ Kingdom             │
+│ 4. Settings        │                     │
+│ 5. Exit            │ Current Weather:    │
+│                    │ Temperature: 18°C   │
+│                    │ Condition: Cloudy   │
+│                    │ Feels Like: 16°C    │
+│                    │ Humidity: 72%       │
+│                    │ Wind: 15 km/h NW    │
+│                    │ Pressure: 1012 mb   │
+│                    │ Visibility: 10 km   │
+├─────────────────────────────────────────┤
+│ Weather data loaded                       │
+└─────────────────────────────────────────┘
 ```
 
-**Output:**
+### Tokyo Weather Display
+**Location:** `Tokyo, Japan`
+
+**Expected Output:**
 ```
-[10:11:05 PM] ℹ️ Fetching current weather for Tokyo, Japan...
-🌤️  Weather Information for Tokyo, Tokyo, Japan
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🌡️  Temperature: 28°C (feels like 32°C)
-☁️  Condition: Sunny
-💧 Humidity: 65%
-💨 Wind Speed: 8 km/h
-👁️  Visibility: 10 km
-🔘 Pressure: 1015 mb
+Location: Tokyo, Tokyo, Japan
+
+Current Weather:
+Temperature: 24°C
+Condition: Partly cloudy
+Feels Like: 27°C
+Humidity: 68%
+Wind: 8 km/h SE
+Pressure: 1018 mb
+Visibility: 10 km
 ```
+
+### Loading State
+**During API Call:**
+```
+│ Loading weather data...                  │
+│                                         │
+│ Please wait while we fetch the latest   │
+│ weather information.                    │
+```
+
+**Status Bar During Load:**
+```
+│ Loading current weather... Please wait   │
+```
+
+---
 
 ## Weather Forecast Examples
 
-### Default 3-Day Forecast
-```bash
-npm run dev forecast "Paris"
+### 3-Day Forecast Display
+**Navigation:** Menu → 3. Weather Forecast
+
+**Expected Output:**
+```
+┌─────────────────────────────────────────┐
+│        WAIT - Weather App In Terminal    │
+├─────────────────────────────────────────┤
+│ Main Menu          │ Weather Information │
+│                    │                     │
+│ 1. Enter Location  │ Location: London,   │
+│ 2. Current Weather │ England, UK         │
+│ 3. Weather Forecast│                     │
+│ 4. Settings        │ 3-Day Weather       │
+│ 5. Exit            │ Forecast:           │
+│                    │                     │
+│                    │ Day 1 - 2025-09-14: │
+│                    │   Condition: Cloudy │
+│                    │   Max: 20°C         │
+│                    │   Min: 12°C         │
+│                    │   Humidity: 75%     │
+│                    │   Wind: 18 km/h     │
+│                    │                     │
+│                    │ Day 2 - 2025-09-15: │
+│                    │   Condition: Rain   │
+│                    │   Max: 17°C         │
+│                    │   Min: 10°C         │
+│                    │   Humidity: 85%     │
+│                    │   Wind: 22 km/h     │
+│                    │                     │
+│                    │ Day 3 - 2025-09-16: │
+│                    │   Condition: Sunny  │
+│                    │   Max: 22°C         │
+│                    │   Min: 14°C         │
+│                    │   Humidity: 65%     │
+│                    │   Wind: 12 km/h     │
+├─────────────────────────────────────────┤
+│ Forecast data loaded                     │
+└─────────────────────────────────────────┘
 ```
 
-**Output:**
-```
-[10:11:26 PM] ℹ️ Fetching 3-day weather forecast for Paris...
-🔮 Weather Forecast for Paris, Ile-de-France, France
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+### Scrollable Forecast
+**Note:** Forecast content is scrollable in the display panel
+- Use arrow keys to scroll through longer forecasts
+- All forecast data fits in the display area
 
-📅 Monday, September 9
-   🌡️  High: 22°C | Low: 14°C
-   ☁️  Partly cloudy
-   💧 Humidity: 68%
-   💨 Wind: 15 km/h
-   ────────────────────────────────────────────
-📅 Tuesday, September 10
-   🌡️  High: 20°C | Low: 12°C
-   ☁️  Light rain
-   💧 Humidity: 78%
-   💨 Wind: 12 km/h
-   ────────────────────────────────────────────
-📅 Wednesday, September 11
-   🌡️  High: 18°C | Low: 10°C
-   ☁️  Overcast
-   💧 Humidity: 82%
-   💨 Wind: 14 km/h
-```
+---
 
-### Custom Duration Forecast
-```bash
-npm run dev forecast "Sydney" 5
-```
+## Settings and Configuration
 
-**Output:**
-```
-[10:12:15 PM] ℹ️ Fetching 5-day weather forecast for Sydney...
-🔮 Weather Forecast for Sydney, New South Wales, Australia
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+### Settings Menu Display
+**Navigation:** Menu → 4. Settings
 
-📅 Monday, September 9
-   🌡️  High: 24°C | Low: 16°C
-   ☁️  Sunny
-   💧 Humidity: 55%
-   💨 Wind: 12 km/h
-   ────────────────────────────────────────────
-📅 Tuesday, September 10
-   🌡️  High: 26°C | Low: 18°C
-   ☁️  Partly cloudy
-   💧 Humidity: 58%
-   💨 Wind: 10 km/h
-   ────────────────────────────────────────────
-📅 Wednesday, September 11
-   🌡️  High: 23°C | Low: 15°C
-   ☁️  Light rain
-   💧 Humidity: 72%
-   💨 Wind: 15 km/h
-   ────────────────────────────────────────────
-📅 Thursday, September 12
-   🌡️  High: 21°C | Low: 13°C
-   ☁️  Overcast
-   💧 Humidity: 78%
-   💨 Wind: 18 km/h
-   ────────────────────────────────────────────
-📅 Friday, September 13
-   🌡️  High: 25°C | Low: 17°C
-   ☁️  Sunny
-   💧 Humidity: 52%
-   💨 Wind: 8 km/h
+#### With API Key Configured
+```
+┌─────────────────────────────────────────┐
+│        WAIT - Weather App In Terminal    │
+├─────────────────────────────────────────┤
+│ Main Menu          │ Weather Information │
+│                    │                     │
+│ 1. Enter Location  │ Settings:           │
+│ 2. Current Weather │                     │
+│ 3. Weather Forecast│ Current Location:   │
+│ 4. Settings        │ London, UK          │
+│ 5. Exit            │ API Key Status:     │
+│                    │ Configured ✓        │
+│                    │                     │
+│                    │ Configuration:      │
+│                    │ • Weather API:      │
+│                    │   WeatherAPI.com    │
+│                    │ • Base URL:         │
+│                    │   https://api.      │
+│                    │   weatherapi.com/v1 │
+│                    │                     │
+│                    │ Available Actions:  │
+│                    │ 1. Change API Key   │
+│                    │ 2. Clear Cache      │
+│                    │ 3. Reset App        │
+├─────────────────────────────────────────┤
+│ Settings view - Press any key to return  │
+└─────────────────────────────────────────┘
 ```
 
-## Error Examples
+#### Without API Key Configured
+```
+Settings:
 
-### Invalid Location
-```bash
-npm run dev current ""
+Current Location: London, UK
+API Key Status: Not configured ✗
+
+To configure API key:
+1. Get free API key at: https://www.weatherapi.com/
+2. Set environment variable: export WEATHER_API_KEY="your_key"
+3. Restart application
+
+Available Actions:
+1. Change API Key (requires restart)
+2. Clear Cache
+3. Reset Application
 ```
 
-**Output:**
-```
-❌ Error: Location is required
-💡 Usage: weather-cli current <location>
-```
+---
 
-### Location Not Found
-```bash
-npm run dev current "InvalidCityName12345"
-```
+## Error Scenarios
 
-**Output:**
-```
-[10:13:45 PM] ℹ️ Fetching current weather for InvalidCityName12345...
-❌ Error: Failed to fetch current weather for "InvalidCityName12345": API Error: Bad Request
-```
+### Missing API Key Error
+**Scenario:** API key not configured
+**Navigation:** Menu → 2. Current Weather
 
-### Invalid Forecast Days
-```bash
-npm run dev forecast "London" 15
+**Error Display:**
 ```
-
-**Output:**
-```
-❌ Error: Invalid number of days
-💡 Days must be between 1 and 10
-```
-
-### Missing API Key
-```bash
-# With invalid or missing API key in .env
-npm run dev current "London"
-```
-
-**Output:**
-```
-❌ Error: Invalid or missing WEATHER_API_KEY environment variable
-💡 Please set your Weather API key:
-   export WEATHER_API_KEY="your_api_key_here"
-   Get a free API key at: https://www.weatherapi.com/
-```
-
-## Help Command Examples
-
-### General Help
-```bash
-npm run dev -- --help
+┌─────────────────────────────────────────┐
+│        WAIT - Weather App In Terminal    │
+├─────────────────────────────────────────┤
+│ Main Menu          │ Weather Information │
+│                    │                     │
+│ 1. Enter Location  │ Error: Missing or   │
+│ 2. Current Weather │ invalid WEATHER_API │
+│ 3. Weather Forecast│ _KEY environment    │
+│ 4. Settings        │ variable. Please    │
+│ 5. Exit            │ set your Weather    │
+│                    │ API key as an       │
+│                    │ environment         │
+│                    │ variable.           │
+│                    │                     │
+│                    │ To fix this issue:  │
+│                    │                     │
+│                    │ 1. Get a free API   │
+│                    │    key at:          │
+│                    │    https://www.     │
+│                    │    weatherapi.com/  │
+│                    │ 2. Sign up →        │
+│                    │    Dashboard →      │
+│                    │    Copy your key    │
+│                    │ 3. Set environment  │
+│                    │    variable:        │
+│                    │    export WEATHER_  │
+│                    │    API_KEY="your_   │
+│                    │    api_key_here"    │
+│                    │ 4. Restart the      │
+│                    │    application      │
+├─────────────────────────────────────────┤
+│ Configuration error                      │
+└─────────────────────────────────────────┘
 ```
 
-**Output:**
+### Location Not Set Error
+**Scenario:** User tries to get weather without setting location
+**Navigation:** Menu → 2. Current Weather (without setting location first)
+
+**Error Display:**
 ```
-Usage: weather-cli [options] [command]
-
-A CLI application to fetch weather information
-
-Options:
-  -V, --version                  output the version number
-  -h, --help                     display help for command
-
-Commands:
-  current|now <location>         Get current weather for a location
-  forecast|fc <location> [days]  Get weather forecast for a location
-  help [command]                 display help for command
-
-Examples:
-  $ weather-cli current "London"
-  $ weather-cli current "New York, NY"
-  $ weather-cli forecast "Paris" 5
-  $ weather-cli fc "Tokyo"
-
-Environment Variables:
-  WEATHER_API_KEY     Your WeatherAPI.com API key (required)
-  WEATHER_API_BASE_URL Base URL for the weather API (optional)
-
-Get a free API key at: https://www.weatherapi.com/
+│ Please set location first               │
 ```
 
-### Command-Specific Help
-```bash
-npm run dev current --help
+### Network/API Error
+**Scenario:** Internet connection issue or API problem
+
+**Error Display:**
+```
+Error: Failed to fetch weather data for "InvalidCity"
+
+Please check your location and try again.
+Use the menu to enter a new location or check your internet connection.
 ```
 
-**Output:**
+### Invalid Location Error
+**Input:** `XYZ123InvalidCity`
+
+**Error Display:**
 ```
-Usage: weather-cli current|now [options] <location>
+Error: Location not found: "XYZ123InvalidCity"
 
-Get current weather for a location
-
-Arguments:
-  location    Location to get weather for (e.g., "London", "New York, NY")
-
-Options:
-  -h, --help  display help for command
+Please check your location and try again.
+Use the menu to enter a new location or check your internet connection.
 ```
 
-## Location Format Examples
+---
 
-### Successful Location Formats
-- `"London"`
-- `"New York, NY"`
-- `"Paris, France"`
-- `"Tokyo, Japan"`
-- `"Sydney, NSW, Australia"`
-- `"Los Angeles, CA, USA"`
+## Advanced Usage Patterns
 
-### Problematic Location Formats
-- `""` (Empty string)
-- `"123"` (Numbers only)
-- `"!@#$%"` (Special characters only)
-- `"X"` (Too short)
+### Workflow for Multiple Locations
+1. **Set Location A:** Enter Location → "London, UK"
+2. **Check Weather A:** Current Weather → View London data
+3. **Change Location:** Enter Location → "Tokyo, Japan"  
+4. **Check Weather B:** Current Weather → View Tokyo data
+5. **Compare Forecasts:** Weather Forecast for each location
+
+### Daily Weather Check Routine
+1. **Launch WAIT:** `./wait-linux`
+2. **Quick Check:** Navigate directly to "2. Current Weather"
+3. **Extended Info:** Check "3. Weather Forecast" if needed
+4. **Quick Exit:** Press `q` to quit
+
+### First-Time User Setup
+1. **Launch:** Start WAIT application
+2. **Check Settings:** Menu → 4. Settings (verify API key status)
+3. **Configure if Needed:** Follow instructions if API key missing
+4. **Set Location:** Menu → 1. Enter Location
+5. **Test:** Menu → 2. Current Weather
+6. **Explore:** Try forecast and other features
+
+---
+
+## Troubleshooting Examples
+
+### Diagnostic Workflow
+When something isn't working, follow this pattern:
+
+1. **Check Settings First:**
+   ```
+   Menu → 4. Settings → Check API Key Status
+   ```
+
+2. **Test Simple Location:**
+   ```
+   Menu → 1. Enter Location → Type "London" → Enter
+   ```
+
+3. **Try Basic Weather:**
+   ```
+   Menu → 2. Current Weather
+   ```
+
+### Common Issue Resolution
+
+#### Issue: Blank weather display
+**Check:** Settings menu shows API key status
+**Solution:** Configure API key if status shows ✗
+
+#### Issue: "Location not found" errors
+**Try Alternative Formats:**
+- Original: `Springfield`
+- Better: `Springfield, IL`
+- Best: `Springfield, Illinois, US`
+
+#### Issue: Display looks broken
+**Terminal Size Check:**
+- Minimum: 80 columns × 24 rows
+- Recommended: 100 columns × 30 rows
+- Test: Resize terminal window
+
+### Testing Your Setup
+
+**Complete Test Sequence:**
+1. Launch WAIT
+2. Go to Settings → Verify "Configured ✓"
+3. Enter Location → "London"  
+4. Current Weather → Should show data
+5. Weather Forecast → Should show 3-day forecast
+6. Exit with `q`
+
+**Expected Results:**
+- ✅ All menu options work
+- ✅ Weather data displays correctly
+- ✅ No error messages
+- ✅ Smooth navigation
+
+---
+
+## Performance Examples
+
+### Typical Response Times
+- **Menu Navigation:** Instant
+- **Location Setting:** Instant (local operation)
+- **Current Weather:** 1-3 seconds (API call)
+- **Weather Forecast:** 1-3 seconds (API call)
+- **Settings Display:** Instant
+
+### Resource Usage
+- **Memory:** ~50MB for executable
+- **CPU:** Minimal (only during API calls)
+- **Network:** ~1KB per weather request
+- **Storage:** Executable size ~45MB
+
+This demonstrates WAIT's efficiency and responsiveness for daily weather checking needs.

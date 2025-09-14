@@ -2,13 +2,14 @@
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](https://github.com/your-username/wait/releases)
+[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](https://github.com/KaitoJD/wait/releases)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](./LICENSE)
 [![Summer of Making 2025](https://img.shields.io/badge/Summer%20of%20Making-2025-ff6b35.svg)](https://summerofmaking.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 
 </div>
 
-A modern, interactive **TUI (Text User Interface)** weather application. Features an intuitive menu-driven interface for seamless weather information access. This is the product participating in the Summer of Making 2025 program.
+A modern, interactive **TUI (Text User Interface)** weather application built with TypeScript and blessed. Features an intuitive menu-driven interface with modular architecture for seamless weather information access. This project is participating in the Summer of Making 2025 program.
 
 ## Documentation
 
@@ -35,28 +36,46 @@ A modern, interactive **TUI (Text User Interface)** weather application. Feature
 
 ### 🛠️ Technical Features
 - **TypeScript**: Fully typed for better development experience and code reliability
-- **Error Handling**: Comprehensive error messages with helpful suggestions  
-- **Extensible Architecture**: Well-organized code structure for easy maintenance
-- **Beautiful Output**: Clean, emoji-enhanced formatting for easy reading
+- **Modular Architecture**: Component-based UI system with separation of concerns
+- **Event-Driven**: Robust event management system for user interactions
+- **Error Handling**: Comprehensive error messages with helpful suggestions
+- **Cross-Platform**: Support for Windows, macOS, and Linux executables
+- **Environment Config**: Flexible configuration through environment variables
 
 ## 🚀 Quick Start
 
+### Prerequisites
+1. Get a free API key from [WeatherAPI.com](https://www.weatherapi.com/)
+2. Set your API key as an environment variable:
+   ```bash
+   export WEATHER_API_KEY="your_api_key_here"
+   ```
+
 ### Running the TUI Application
 ```bash
-# Development mode
+# Development mode with TypeScript
 npm run dev
 
-# Or use built executable
-./releases/wait-weather-linux
+# Or use pre-built executable (Linux)
+./releases/wait-linux
+
+# Or start after building
+npm start
 ```
 
-### Building Executables
+### Building from Source
 ```bash
-# Create platform-specific executables
-./build-executable.sh
+# Install dependencies
+npm install
 
-# Or manually
+# Build TypeScript
+npm run build
+
+# Create executables for all platforms
 npm run build:pkg
+
+# Or create Linux executable only
+npx pkg package.json --targets node18-linux-x64 --output releases/wait-linux
 ```
 
 ## API Integration

@@ -1,207 +1,399 @@
-# Usage Guide
+# WAIT - Usage Guide
+
+Complete guide for using WAIT (Weather App In Terminal) TUI application.
 
 ## Table of Contents
 
-1. [Easy Usage with Scripts](#easy-usage-with-scripts)
-2. [Commands Overview](#commands-overview)
-3. [Current Weather](#current-weather)
-   - [Using Wrapper Scripts (Recommended)](#using-wrapper-scripts-recommended)
-   - [Direct npm Commands](#direct-npm-commands)
-   - [Using Aliases](#using-aliases)
-   - [After Building](#after-building)
-4. [Weather Forecast](#weather-forecast)
-   - [Using Wrapper Scripts (Recommended)](#using-wrapper-scripts-recommended-1)
-   - [Direct npm Commands](#direct-npm-commands-1)
-5. [Location Formats](#location-formats)
-   - [Recommended Formats](#recommended-formats)
-   - [Tips for Better Results](#tips-for-better-results)
-6. [First Time Setup](#first-time-setup)
-   - [Using Wrapper Scripts (Easiest)](#using-wrapper-scripts-easiest)
-   - [Manual Setup](#manual-setup)
-7. [Command Options](#command-options)
-   - [Getting Help](#getting-help)
-   - [Version Information](#version-information)
-8. [Error Handling](#error-handling)
-9. [Development vs Production](#development-vs-production)
-   - [Development Mode](#development-mode)
-   - [Production Mode](#production-mode)
-10. [Advanced Usage](#advanced-usage)
-    - [Environment-specific Configuration](#environment-specific-configuration)
+1. [Quick Start](#quick-start)
+2. [Interface Overview](#interface-overview)
+3. [Navigation Guide](#navigation-guide)
+4. [Menu Functions](#menu-functions)
+5. [Location Management](#location-management)
+6. [Weather Information](#weather-information)
+7. [Settings and Configuration](#settings-and-configuration)
+8. [Keyboard Shortcuts](#keyboard-shortcuts)
+9. [Tips and Best Practices](#tips-and-best-practices)
+10. [Troubleshooting Common Issues](#troubleshooting-common-issues)
 
 ---
 
-## Easy Usage with Scripts
+## Quick Start
 
-For convenience, we provide wrapper scripts that make using the Weather CLI much easier:
-
-### Linux/macOS Users
+### 1. Launch WAIT
 ```bash
-./weather.sh current "London"
-./weather.sh forecast "Paris" 5
-./weather.sh setup  # First time setup
+# Using executable
+./wait-linux          # Linux
+./wait-macos           # macOS  
+wait-win.exe           # Windows
+
+# Using npm (if built from source)
+npm start
+npm run dev
 ```
 
-### Windows Users
-```cmd
-weather.bat current "London"
-weather.bat forecast "Paris" 5
-weather.bat setup  REM First time setup
+### 2. First Time Setup
+1. When WAIT starts, you'll see the main menu
+2. Select **"1. Enter Location"** to set your location
+3. Type a city name (e.g., "London", "New York, NY")
+4. Press **Enter** to confirm
+
+### 3. Get Weather
+1. Select **"2. Current Weather"** for current conditions
+2. Or select **"3. Weather Forecast"** for 3-day forecast
+
+---
+
+## Interface Overview
+
+WAIT uses a clean, organized TUI (Text User Interface) with three main areas:
+
+```
+┌─────────────────────────────────────────┐
+│        WAIT - Weather App In Terminal    │  ← Header
+├─────────────────────────────────────────┤
+│ Main Menu          │ Weather Information │
+│                    │                     │
+│ 1. Enter Location  │ Select an option    │  ← Main Content
+│ 2. Current Weather │ from the menu to    │    (Menu + Display)
+│ 3. Weather Forecast│ get started         │
+│ 4. Settings        │                     │
+│ 5. Exit            │                     │
+├─────────────────────────────────────────┤
+│ Press ↑/↓ to navigate, Enter to select   │  ← Status Bar
+└─────────────────────────────────────────┘
 ```
 
-## Commands Overview
+### Interface Elements:
 
-The Weather CLI provides two main commands with aliases for convenience:
+- **Header**: Application title and branding
+- **Menu Panel**: Interactive menu with numbered options
+- **Display Panel**: Shows weather information and messages
+- **Status Bar**: Context-sensitive help and instructions
 
-- `current` (alias: `now`) - Get current weather
-- `forecast` (alias: `fc`) - Get weather forecast
-- `--help` - Show help information
-- `--version` - Show version information
+---
 
-## Current Weather
+## Navigation Guide
 
-Get real-time weather information for any location:
+### Basic Navigation
+| Key | Action | Description |
+|-----|--------|-------------|
+| `↑` | Up | Move to previous menu item |
+| `↓` | Down | Move to next menu item |
+| `Enter` | Select | Choose the highlighted menu item |
+| `Escape` | Back | Return to previous screen |
+| `q` | Quit | Exit the application |
 
-### Using Wrapper Scripts (Recommended)
-```bash
-# Linux/macOS
-./weather.sh current "London"
-./weather.sh now "New York, NY"
-
-# Windows
-weather.bat current "London"
-weather.bat now "New York, NY"
+### Navigation Flow
+```
+Main Menu ──→ Enter Location ──→ [Type location] ──→ Back to Menu
+    │                                                      ↑
+    ├──→ Current Weather ──→ [Weather Display] ──────────┘
+    │                                                      
+    ├──→ Weather Forecast ──→ [Forecast Display] ─────────┘
+    │
+    ├──→ Settings ──→ [Settings Display] ─────────────────┘
+    │
+    └──→ Exit ──→ [Application Closes]
 ```
 
-### Direct npm Commands
-```bash
-npm run dev current "London"
-npm run dev current "New York, NY"
-npm run dev current "Tokyo, Japan"
+---
+
+## Menu Functions
+
+### 1. Enter Location
+**Purpose**: Set your location for weather queries
+
+**How to use:**
+1. Select menu item 1
+2. Type your location in the input box
+3. Press `Enter` to confirm or `Escape` to cancel
+
+**Location formats:**
+- City name: `London`
+- City, State: `New York, NY`
+- City, Country: `Paris, France`
+- Coordinates: `40.7128,-74.0060`
+
+### 2. Current Weather
+**Purpose**: Display current weather conditions
+
+**Requirements**: Location must be set first
+
+**Information shown:**
+- Current temperature (°C)
+- Weather condition (e.g., "Sunny", "Cloudy")
+- Feels like temperature
+- Humidity percentage
+- Wind speed and direction
+- Atmospheric pressure
+- Visibility
+
+**Example display:**
+```
+Current Weather for London, England, United Kingdom
+
+Temperature: 22°C
+Condition: Partly cloudy
+Feels Like: 24°C
+Humidity: 65%
+Wind: 15 km/h SW
+Pressure: 1013 mb
+Visibility: 10 km
 ```
 
-### Using Aliases
-```bash
-npm run dev now "Berlin"
+### 3. Weather Forecast (3 days)
+**Purpose**: Show 3-day weather forecast
+
+**Requirements**: Location must be set first
+
+**Information shown:**
+- Daily high and low temperatures
+- Weather conditions for each day
+- Humidity levels
+- Wind speeds
+
+**Example display:**
+```
+3-Day Forecast for London, England, United Kingdom
+
+Day 1 - 2025-09-14:
+  Condition: Partly cloudy
+  Max Temperature: 25°C
+  Min Temperature: 18°C
+  Humidity: 70%
+  Max Wind: 20 km/h
+
+Day 2 - 2025-09-15:
+  Condition: Light rain
+  Max Temperature: 22°C
+  Min Temperature: 16°C
+  Humidity: 85%
+  Max Wind: 25 km/h
+
+Day 3 - 2025-09-16:
+  Condition: Sunny
+  Max Temperature: 27°C
+  Min Temperature: 19°C
+  Humidity: 60%
+  Max Wind: 15 km/h
 ```
 
-### After Building
-```bash
-node dist/app.js current "Paris"
+### 4. Settings
+**Purpose**: View configuration and get help
+
+**Information shown:**
+- Current location setting
+- API key status (✓ configured / ✗ not configured)
+- Configuration details
+- Setup instructions (if needed)
+
+### 5. Exit
+**Purpose**: Safely close the application
+
+**Action**: Immediately exits WAIT
+
+---
+
+## Location Management
+
+### Setting Your Location
+
+1. **From Main Menu**: Select "1. Enter Location"
+2. **Input Format**: The location input accepts various formats
+3. **Confirmation**: Press `Enter` to save, `Escape` to cancel
+
+### Supported Location Formats
+
+| Format | Example | When to Use |
+|--------|---------|-------------|
+| City only | `London` | Well-known major cities |
+| City, State | `Austin, TX` | US cities (avoids confusion) |
+| City, Country | `Paris, France` | International cities |
+| Coordinates | `51.5074,-0.1278` | Precise locations |
+
+### Location Tips
+
+**For Accuracy:**
+- Include state/country for common city names
+- Use official city names (not nicknames)
+- Check spelling carefully
+
+**Examples of Good vs Poor Location Inputs:**
+```
+✅ Good:                    ❌ Poor:
+London, UK                  London (ambiguous)
+New York, NY               NYC (nickname)
+Paris, France              Paris (could be Paris, TX)
+Tokyo, Japan               Tokio (misspelled)
 ```
 
-## Weather Forecast
+---
 
-Get weather forecast for multiple days (1-10 days):
+## Weather Information
 
-### Using Wrapper Scripts (Recommended)
-```bash
-# Linux/macOS
-./weather.sh forecast "London"      # Default 3 days
-./weather.sh forecast "Paris" 5     # Custom number of days
-./weather.sh fc "Tokyo" 7           # Using alias
+### Understanding Weather Data
 
-# Windows  
-weather.bat forecast "London"       # Default 3 days
-weather.bat forecast "Paris" 5      # Custom number of days
-weather.bat fc "Tokyo" 7            # Using alias
-```
+**Temperature**: Always shown in Celsius (°C)
+- Current temperature
+- "Feels like" temperature (includes wind chill/heat index)
+- Daily highs and lows in forecasts
 
-### Direct npm Commands
-```bash
-npm run dev forecast "London"       # Default 3 days
-npm run dev forecast "Paris" 5      # Custom number of days
-npm run dev fc "Tokyo" 7            # Using alias
-```
+**Conditions**: Descriptive weather states
+- Sunny, Cloudy, Partly cloudy
+- Light rain, Heavy rain, Drizzle
+- Snow, Sleet, Fog
+- Thunderstorms, etc.
 
-## Location Formats
+**Wind**: Speed and direction
+- Speed in kilometers per hour (km/h)
+- Direction as compass points (N, NE, E, SE, etc.)
 
-The application accepts various location formats:
+**Other Metrics**:
+- **Humidity**: Percentage of moisture in air
+- **Pressure**: Atmospheric pressure in millibars (mb)
+- **Visibility**: How far you can see (km)
 
-### Recommended Formats
-- `"London"` - City name
-- `"New York, NY"` - City, State
-- `"London, UK"` - City, Country
-- `"Paris, Ile-de-France, France"` - City, Region, Country
+### Data Refresh
 
-### Tips for Better Results
-- Use specific location names for accuracy
-- Include state/province for US/Canadian cities
-- Add country name for international locations
-- Famous landmarks work as reference points
+- **Current Weather**: Real-time data from WeatherAPI.com
+- **Forecasts**: Updated multiple times per day
+- **No Manual Refresh**: Data is always current when requested
 
-## First Time Setup
+---
 
-### Using Wrapper Scripts (Easiest)
-```bash
-# Linux/macOS
-./weather.sh setup
+## Settings and Configuration
 
-# Windows
-weather.bat setup
-```
+### Accessing Settings
+1. Select "4. Settings" from main menu
+2. View current configuration
+3. Press any key to return to menu
 
-This will automatically:
-- Install all dependencies
-- Create `.env` file from template
-- Build the TypeScript project
-- Provide setup instructions
+### Configuration Information Shown
+- **Current Location**: Your set location or "Not set"
+- **API Key Status**: ✓ Configured or ✗ Not configured
+- **Base URL**: WeatherAPI.com endpoint
+- **Setup Instructions**: If API key is missing
 
-### Manual Setup
-If you prefer to set up manually, follow the [Installation Guide](INSTALLATION.md).
+### API Key Status
 
-## Command Options
+**✓ Configured:**
+- Green checkmark indicates API key is properly set
+- Weather functions will work normally
 
-### Getting Help
-```bash
-# Using wrapper scripts
-./weather.sh help        # Linux/macOS
-weather.bat help         # Windows
+**✗ Not configured:**
+- Red X indicates missing or invalid API key
+- Settings screen shows setup instructions
+- Weather functions will display helpful error messages
 
-# Using npm directly
-npm run dev -- --help
+---
 
-# Command-specific help
-npm run dev current --help
-npm run dev forecast --help
-```
+## Keyboard Shortcuts
 
-### Version Information
-```bash
-npm run dev -- --version
-```
+### Global Shortcuts (work anywhere)
+| Key | Function |
+|-----|----------|
+| `q` | Quit application immediately |
+| `Escape` | Go back to main menu |
 
-## Error Handling
+### Menu Navigation
+| Key | Function |
+|-----|----------|
+| `↑` / `↓` | Navigate menu items |
+| `Enter` | Select highlighted item |
 
-The CLI provides helpful error messages:
+### Location Input
+| Key | Function |
+|-----|----------|
+| `Enter` | Confirm location entry |
+| `Escape` | Cancel location entry |
+| `Backspace` | Delete characters |
+| Text keys | Type location name |
 
-- **Invalid location**: Suggestions for proper location format
-- **Network issues**: Clear indication of connectivity problems  
-- **API errors**: Specific guidance for API-related issues
-- **Invalid parameters**: Help with correct command usage
+### Weather Display
+| Key | Function |
+|-----|----------|
+| `Escape` | Return to main menu |
+| Any other key | Return to main menu |
 
-## Development vs Production
+---
 
-### Development Mode
-```bash
-npm run dev current "London"
-```
+## Tips and Best Practices
 
-### Production Mode
-```bash
-# Build first
-npm run build
+### Location Management
+1. **Set Location First**: Always set your location before checking weather
+2. **Be Specific**: Include state/country for accuracy
+3. **Test Different Formats**: If one doesn't work, try another format
 
-# Run built version
-node dist/app.js current "London"
-```
+### Navigation Efficiency
+1. **Use Arrow Keys**: More reliable than mouse in terminal
+2. **Remember Shortcuts**: `q` to quit, `Escape` to go back
+3. **Check Status Bar**: Shows context-sensitive help
 
-## Advanced Usage
+### Terminal Setup
+1. **Terminal Size**: Ensure at least 80x24 character display
+2. **Font**: Use monospaced fonts for best display
+3. **Modern Terminal**: Use updated terminal applications
 
-### Environment-specific Configuration
-```bash
-# Use different API endpoint
-WEATHER_API_BASE_URL="https://custom-api.com/v1" npm run dev current "London"
+### API Usage
+1. **Check Settings First**: Verify API key status before troubleshooting
+2. **Respect Limits**: Free API has rate limits (reasonable for normal use)
+3. **Keep Key Secure**: Don't share your API key
 
-# Debug mode (if implemented)
-DEBUG=true npm run dev current "London"
-```
+---
+
+## Troubleshooting Common Issues
+
+### Problem: "Please set location first"
+**Cause**: No location configured
+**Solution**: Use menu option 1 to set your location
+
+### Problem: API key error messages
+**Cause**: Missing or invalid API key
+**Solution**: 
+1. Check Settings menu for status
+2. Follow setup instructions shown
+3. Verify environment variable is set correctly
+
+### Problem: "Failed to fetch weather data"
+**Possible Causes & Solutions:**
+1. **Network issue**: Check internet connection
+2. **Invalid location**: Try different location format
+3. **API quota exceeded**: Check WeatherAPI.com dashboard
+4. **Server issue**: Try again later
+
+### Problem: Display looks broken or garbled
+**Solutions:**
+1. Resize terminal window (minimum 80x24)
+2. Use a modern terminal application
+3. Ensure monospaced font is selected
+4. Check terminal UTF-8 support
+
+### Problem: Menu navigation not working
+**Solutions:**
+1. Ensure terminal has focus
+2. Try different arrow keys
+3. Use a different terminal application
+4. Check if keyboard shortcuts are being intercepted
+
+### Problem: Can't type location
+**Solutions:**
+1. Make sure you've selected "Enter Location" first
+2. Press `Enter` to activate the input field
+3. If stuck, press `Escape` to cancel and try again
+
+### Quick Diagnostic Steps
+1. **Check API Key**: Go to Settings menu
+2. **Test Basic Function**: Try setting a simple location like "London"
+3. **Terminal Test**: Ensure arrow keys work in terminal
+4. **Network Test**: Check internet connectivity
+
+---
+
+## Getting More Help
+
+- **In-Application**: Check the Settings menu for configuration help
+- **Documentation**: See other files in `docs/` folder
+- **GitHub**: Report issues or ask questions on the repository
+- **WeatherAPI**: Visit WeatherAPI.com for API-related issues
+
+**Remember**: Most issues are related to API key configuration or location formatting. Check these first!
