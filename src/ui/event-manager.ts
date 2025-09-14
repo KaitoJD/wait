@@ -28,7 +28,7 @@ export class EventManager {
             onEnterLocation: () => this.handleEnterLocation(),
             onCurrentWeather: () => this.handleCurrentWeather(),
             onForecast: () => this.handleForecast(),
-            onSettings: () => this.handleSettings(),
+            onSettings: () => this.handleSettings().catch(console.error),
             onExit: () => this.handleExit()
         });
     }
@@ -52,11 +52,19 @@ export class EventManager {
         }
 
         try {
+            // Check configuration first
+            const configModule = await import('../utils/config');
+            if (!configModule.isConfigValid()) {
+                const errorMsg = configModule.getConfigErrorMessage();
+                StatusBar.showError(this.components.statusBar, 'Configuration error');
+                WeatherDisplay.showError(this.components.weatherDisplay, errorMsg);
+                return;
+            }
+
             StatusBar.showLoading(this.components.statusBar, 'current weather');
             
             // Import weather service and config
             const weatherModule = await import('../services/weather');
-            const configModule = await import('../utils/config');
             
             const config = configModule.loadConfig();
             const weatherService = new weatherModule.WeatherService(config);
@@ -84,11 +92,19 @@ export class EventManager {
         }
 
         try {
+            // Check configuration first
+            const configModule = await import('../utils/config');
+            if (!configModule.isConfigValid()) {
+                const errorMsg = configModule.getConfigErrorMessage();
+                StatusBar.showError(this.components.statusBar, 'Configuration error');
+                WeatherDisplay.showError(this.components.weatherDisplay, errorMsg);
+                return;
+            }
+
             StatusBar.showLoading(this.components.statusBar, 'weather forecast');
             
             // Import weather service and config
             const weatherModule = await import('../services/weather');
-            const configModule = await import('../utils/config');
             
             const config = configModule.loadConfig();
             const weatherService = new weatherModule.WeatherService(config);
@@ -109,22 +125,36 @@ export class EventManager {
         }
     }
 
-    private handleSettings(): void {
-        const settingsContent = `Settings:
+    private async handleSettings(): Promise<void> {
+        try {
+            // Import config module to check API key status
+            const configModule = await import('../utils/config');
+            const apiKeyStatus = configModule.isConfigValid() ? 'Configured ✓' : 'Not configured ✗';
+            
+            const settingsContent = `Settings:
 
 Current Location: ${this.currentLocation || 'Not set'}
+API Key Status: ${apiKeyStatus}
 
+Configuration:
+• Weather API: WeatherAPI.com
+• Base URL: ${process.env.WEATHER_API_BASE_URL || 'https://api.weatherapi.com/v1'}
+
+${apiKeyStatus.includes('✗') ? 'To configure API key:\n1. Get free API key at: https://www.weatherapi.com/\n2. Set environment variable: export WEATHER_API_KEY="your_key"\n3. Restart application\n' : ''}
 Available Actions:
 1. Change API Key (requires restart)
-2. Clear Cache
+2. Clear Cache  
 3. Reset Application
 
 Note: Settings functionality can be expanded in future versions.
 Press any key to return to main menu.`;
 
-        this.components.weatherDisplay.setContent(settingsContent);
-        this.components.screen.render();
-        StatusBar.updateMessage(this.components.statusBar, 'Settings view - Press any key to return');
+            this.components.weatherDisplay.setContent(settingsContent);
+            this.components.screen.render();
+            StatusBar.updateMessage(this.components.statusBar, 'Settings view - Press any key to return');
+        } catch (error) {
+            console.error('Error in settings:', error);
+        }
     }
 
     private handleExit(): void {

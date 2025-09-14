@@ -66,7 +66,23 @@ Visibility: ${current.vis_km} km`;
     }
 
     static showError(weatherBox: blessed.Widgets.BoxElement, error: string): void {
-        weatherBox.setContent(`Error: ${error}\n\nPlease check your location and try again.\nUse the menu to enter a new location or check your internet connection.`);
+        let content = `Error: ${error}\n\n`;
+        
+        // Check if it's an API key related error
+        if (error.toLowerCase().includes('api key') || error.toLowerCase().includes('weather_api_key')) {
+            content += 'To fix this issue:\n\n';
+            content += '1. Get a free API key at: https://www.weatherapi.com/\n';
+            content += '2. Sign up → Dashboard → Copy your API key\n';
+            content += '3. Set the environment variable:\n';
+            content += '   export WEATHER_API_KEY="your_api_key_here"\n';
+            content += '4. Restart the application\n\n';
+            content += 'Then you can use the weather functions.';
+        } else {
+            content += 'Please check your location and try again.\n';
+            content += 'Use the menu to enter a new location or check your internet connection.';
+        }
+        
+        weatherBox.setContent(content);
         weatherBox.screen.render();
     }
 }
