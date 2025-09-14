@@ -1,7 +1,7 @@
 {
-  "name": "wait-weather",
+  "name": "wait",
   "version": "1.0.0",
-  "description": "WAIT - Weather App In Terminal - An interactive TUI application for weather information.",
+  "description": "WAIT - Weather App In Terminal.",
   "main": "dist/tui-app.js",
   "bin": {
     "wait": "./dist/tui-app.js"
@@ -31,8 +31,8 @@
     "typescript",
     "terminal"
   ],
-  "author": "Your Name",
-  "license": "MIT",
+  "author": "Nguyen Sy Nguyen",
+  "license": "CC BY-NC-SA 4.0",
   "pkg": {
     "scripts": [
       "dist/**/*.js"
