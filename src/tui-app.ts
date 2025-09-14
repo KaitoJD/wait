@@ -54,13 +54,26 @@ class WeatherTUI {
         this.setupScreen();
         this.setupUI();
         this.setupEventHandlers();
+        this.setupProcessHandlers();
     }
 
     private setupScreen() {
         this.screen = blessed.screen({
             smartCSR: true,
-            title: 'WAIT - Weather App In Terminal'
+            title: 'WAIT - Weather App In Terminal',
+            autoPadding: true,
+            dockBorders: true,
+            warnings: false
         });
+
+        // Handle pkg compatibility issues
+        if ((process as any).pkg) {
+            // Disable problematic features in pkg environment
+            const program = this.screen.program as any;
+            if (program && typeof program.isAlt === 'undefined') {
+                program.isAlt = false;
+            }
+        }
     }
 
     private setupUI() {
@@ -204,7 +217,7 @@ class WeatherTUI {
         // Global key handlers
         this.screen.key(['escape', 'q', 'C-c'], () => {
             if (this.state.view === 'menu') {
-                process.exit(0);
+                this.gracefulExit();
             } else {
                 this.showMenu();
             }
@@ -234,7 +247,7 @@ class WeatherTUI {
                     this.showSettings();
                     break;
                 case 4: // Exit
-                    process.exit(0);
+                    this.gracefulExit();
                     break;
             }
         });
@@ -254,6 +267,33 @@ class WeatherTUI {
         this.locationInput.key(['escape'], () => {
             this.showMenu();
         });
+    }
+
+    private setupProcessHandlers() {
+        // Handle process termination gracefully
+        process.on('SIGINT', () => this.gracefulExit());
+        process.on('SIGTERM', () => this.gracefulExit());
+        process.on('exit', () => {
+            try {
+                if (this.screen) {
+                    this.screen.destroy();
+                }
+            } catch (error) {
+                // Ignore cleanup errors
+            }
+        });
+        
+        // Handle uncaught exceptions in pkg environment
+        if ((process as any).pkg) {
+            process.on('uncaughtException', (error) => {
+                if (error.message && error.message.includes('isAlt')) {
+                    // Ignore blessed pkg compatibility errors
+                    this.gracefulExit();
+                } else {
+                    throw error;
+                }
+            });
+        }
     }
 
     private showMenu() {
@@ -408,6 +448,27 @@ class WeatherTUI {
     private updateStatusBar(message: string) {
         this.statusBar.setContent(`{center}${message}{/center}`);
         this.screen.render();
+    }
+
+    private gracefulExit() {
+        try {
+            // Safe cleanup for pkg environments
+            if (this.screen && this.screen.program) {
+                const program = this.screen.program as any;
+                if (program.isAlt) {
+                    program.alternateBuffer = false;
+                    program.normalBuffer();
+                }
+            }
+            
+            if (this.screen) {
+                this.screen.destroy();
+            }
+        } catch (error) {
+            // Ignore cleanup errors in pkg environment
+        }
+        
+        process.exit(0);
     }
 
     public start() {
