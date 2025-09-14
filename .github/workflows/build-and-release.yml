@@ -82,33 +82,33 @@ jobs:
           generate_release_notes: true
           name: "WAIT Weather TUI ${{ github.ref_name }}"
           body: |
-            ## 🌤️ WAIT - Weather App In Terminal
+            ## WAIT - Weather App In Terminal
             
             ### What's New in ${{ github.ref_name }}
             
             A beautiful TUI (Text User Interface) weather application with interactive navigation.
             
-            ### 📦 Installation
+            ### Installation
             
             Download the appropriate executable for your platform:
             - **Linux**: `wait-linux`
             - **Windows**: `wait-win32.exe` 
             - **macOS**: `wait-darwin`
             
-            ### 🚀 Usage
+            ### Usage
             
             1. Download the executable for your platform
             2. Make it executable (Linux/macOS): `chmod +x wait-weather-*`
             3. Set your WeatherAPI key: `export WEATHER_API_KEY="your_key_here"`
             4. Run the application: `./wait-*`
             
-            ### 🎮 Navigation
+            ### Navigation
             - **↑↓**: Navigate menu items
             - **Enter**: Select option
             - **ESC**: Go back
             - **q**: Quit application
             
-            ### 🔑 API Key
+            ### API Key
             Get your free API key at [WeatherAPI.com](https://www.weatherapi.com/)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -138,7 +138,7 @@ jobs:
 
       - name: Verify Build Output
         run: |
-          echo "✅ Checking build output..."
+          echo "Checking build output..."
           ls -la dist/
-          echo "✅ Verifying main entry point exists..."
+          echo "Verifying main entry point exists..."
           test -f dist/tui-app.js && echo "Main app built successfully" || exit 1

@@ -37,22 +37,22 @@ jobs:
       - name: Create Development Executables
         if: github.event.inputs.create_executables == 'true' || github.event.inputs.create_executables == null
         run: |
-          echo "🔨 Creating development executables..."
+          echo "Creating development executables..."
           
           # Create releases directory
           mkdir -p releases
           
           # Build for all platforms
-          echo "📦 Building Linux executable..."
+          echo "Building Linux executable..."
           npx pkg package.json --target node18-linux-x64 --output releases/wait-linux
           
-          echo "📦 Building Windows executable..."  
+          echo "Building Windows executable..."  
           npx pkg package.json --target node18-win32-x64 --output releases/wait-windows.exe
           
-          echo "📦 Building macOS executable..."
+          echo "Building macOS executable..."
           npx pkg package.json --target node18-darwin-x64 --output releases/wait-macos
           
-          echo "✅ All executables created!"
+          echo "All executables created!"
           ls -lh releases/
 
       - name: Upload Development Build
@@ -65,14 +65,14 @@ jobs:
 
       - name: Build Summary
         run: |
-          echo "## 🎯 Development Build Complete" >> $GITHUB_STEP_SUMMARY
+          echo "## Development Build Complete" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 📦 Artifacts Created:" >> $GITHUB_STEP_SUMMARY
+          echo "### Artifacts Created:" >> $GITHUB_STEP_SUMMARY
           echo "- Linux: \`wait-linux\`" >> $GITHUB_STEP_SUMMARY
           echo "- Windows: \`wait-windows.exe\`" >> $GITHUB_STEP_SUMMARY  
           echo "- macOS: \`wait-macos\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 🚀 How to Test:" >> $GITHUB_STEP_SUMMARY
+          echo "### How to Test:" >> $GITHUB_STEP_SUMMARY
           echo "1. Download artifacts from this workflow run" >> $GITHUB_STEP_SUMMARY
           echo "2. Extract and make executable: \`chmod +x wait-*\`" >> $GITHUB_STEP_SUMMARY
           echo "3. Set API key: \`export WEATHER_API_KEY=\"your_key\"\`" >> $GITHUB_STEP_SUMMARY

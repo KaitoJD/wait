@@ -27,10 +27,10 @@ jobs:
       - name: Run Linting (if available)
         run: |
           if npm run lint --silent 2>/dev/null; then
-            echo "✅ Running linting..."
+            echo "Running linting..."
             npm run lint
           else
-            echo "ℹ️ No linting script found, skipping..."
+            echo "ℹNo linting script found, skipping..."
           fi
         continue-on-error: true
 
@@ -42,19 +42,19 @@ jobs:
 
       - name: Verify TUI App
         run: |
-          echo "✅ Verifying build output..."
+          echo "Verifying build output..."
           ls -la dist/
-          test -f dist/tui-app.js || (echo "❌ Main TUI app not found!" && exit 1)
-          echo "✅ TUI app built successfully"
+          test -f dist/tui-app.js || (echo "Main TUI app not found!" && exit 1)
+          echo "TUI app built successfully"
 
       - name: Test Package Creation (Linux only)
         run: |
-          echo "🔨 Testing executable creation..."
+          echo "Testing executable creation..."
           npx pkg package.json \
             --target node18-linux-x64 \
             --output test-executable
           
-          echo "✅ Executable created successfully"
+          echo "Executable created successfully"
           ls -lh test-executable
           
           # Clean up test executable
