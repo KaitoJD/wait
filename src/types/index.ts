@@ -1,3 +1,5 @@
+import blessed from 'blessed';
+
 // Core weather data interfaces
 export interface WeatherData {
     location: string;
@@ -69,3 +71,20 @@ export interface WeatherConfig {
     apiKey: string;
     baseUrl: string;
 }
+
+// TUI Component interfaces
+export interface TUIComponents {
+    screen: blessed.Widgets.Screen;
+    menu: blessed.Widgets.ListElement;
+    weatherDisplay: blessed.Widgets.BoxElement;
+    locationInput: blessed.Widgets.TextboxElement;
+    statusBar: blessed.Widgets.BoxElement;
+    header: blessed.Widgets.BoxElement;
+}
+
+export interface TUIState {
+    currentView: ViewType;
+    currentLocation?: string;
+}
+
+export type ViewType = 'menu' | 'weather' | 'forecast' | 'settings';

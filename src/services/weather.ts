@@ -50,6 +50,51 @@ export class WeatherService {
     }
 
     /**
+     * Get raw current weather API response for TUI display
+     */
+    async getRawCurrentWeather(location: string): Promise<ApiWeatherResponse> {
+        try {
+            const response = await this.apiClient.get<ApiWeatherResponse>('/current.json', {
+                q: location,
+                aqi: 'no'
+            });
+
+            return response;
+        } catch (error) {
+            throw new Error(`Failed to fetch current weather for "${location}": ${error}`);
+        }
+    }
+
+    /**
+     * Get raw forecast API response for TUI display
+     */
+    async getRawForecast(location: string, days: number = 3): Promise<ApiForecastResponse> {
+        try {
+            if (days < 1 || days > 10) {
+                throw new Error('Forecast days must be between 1 and 10');
+            }
+
+            const response = await this.apiClient.get<ApiForecastResponse>('/forecast.json', {
+                q: location,
+                days: days.toString(),
+                aqi: 'no',
+                alerts: 'no'
+            });
+
+            return response;
+        } catch (error) {
+            throw new Error(`Failed to fetch weather forecast for "${location}": ${error}`);
+        }
+    }
+
+    /**
+     * Alias for getWeatherForecast for backward compatibility
+     */
+    async getForecast(location: string, days: number = 3): Promise<ForecastData> {
+        return this.getWeatherForecast(location, days);
+    }
+
+    /**
      * Transform API response to our internal WeatherData format
      */
     private transformCurrentWeatherResponse(response: ApiWeatherResponse): WeatherData {
