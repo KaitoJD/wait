@@ -2,15 +2,15 @@
   "name": "wait",
   "version": "1.0.0",
   "description": "WAIT - Weather App In Terminal.",
-  "main": "dist/tui-app.js",
+  "main": "dist/app.js",
   "bin": {
-    "wait": "./dist/tui-app.js"
+    "wait": "./dist/app.js"
   },
   "scripts": {
-    "start": "ts-node src/tui-app.ts",
+    "start": "ts-node src/app.ts",
     "build": "tsc",
     "build:pkg": "tsc && pkg package.json",
-    "dev": "ts-node src/tui-app.ts",
+    "dev": "ts-node src/app.ts",
     "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
