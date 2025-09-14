@@ -1,25 +1,21 @@
 {
   "name": "wait-weather",
   "version": "1.0.0",
-  "description": "WAIT - Weather App In Terminal - A TUI application to fetch and display weather information.",
+  "description": "WAIT - Weather App In Terminal - An interactive TUI application for weather information.",
   "main": "dist/tui-app.js",
   "bin": {
-    "wait": "./dist/tui-app.js",
-    "wait-cli": "./dist/app.js"
+    "wait": "./dist/tui-app.js"
   },
   "scripts": {
     "start": "ts-node src/tui-app.ts",
-    "start:cli": "ts-node src/app.ts",
     "build": "tsc",
     "build:pkg": "tsc && pkg package.json",
     "dev": "ts-node src/tui-app.ts",
-    "dev:cli": "ts-node src/app.ts",
     "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
     "axios": "^1.6.0",
     "blessed": "^0.1.81",
-    "commander": "^11.0.0",
     "dotenv": "^16.3.1"
   },
   "devDependencies": {
@@ -32,7 +28,6 @@
   "keywords": [
     "weather",
     "tui",
-    "cli",
     "typescript",
     "terminal"
   ],

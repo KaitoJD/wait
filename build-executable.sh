@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🔨 Building WAIT Weather TUI Application..."
+echo "🔨 Building WAIT - Weather TUI Application..."
 
 # Build TypeScript
 echo "📦 Compiling TypeScript..."

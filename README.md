@@ -8,7 +8,7 @@
 
 </div>
 
-A modern, interactive **TUI (Text User Interface)** weather application with CLI fallback support. Features an intuitive menu-driven interface for seamless weather information access. This is the product participating in the Summer of Making 2025 program.
+A modern, interactive **TUI (Text User Interface)** weather application. Features an intuitive menu-driven interface for seamless weather information access. This is the product participating in the Summer of Making 2025 program.
 
 ## Documentation
 
@@ -28,11 +28,6 @@ A modern, interactive **TUI (Text User Interface)** weather application with CLI
 - **Beautiful ASCII Interface**: Clean, bordered layout with emoji indicators
 - **Location Management**: Easy location entry with input validation
 
-### ⚡ CLI Mode (Traditional)
-- **Current Weather**: Get real-time weather information including temperature, humidity, wind speed, and more
-- **Weather Forecast**: View detailed forecasts for up to 10 days
-- **Command-line Arguments**: Direct access via terminal commands
-
 ### 🚀 Cross-Platform Executable
 - **Standalone Executables**: No dependencies required after build
 - **Multi-platform Support**: Windows, macOS, and Linux binaries
@@ -46,23 +41,13 @@ A modern, interactive **TUI (Text User Interface)** weather application with CLI
 
 ## 🚀 Quick Start
 
-### TUI Mode (Interactive Interface)
+### Running the TUI Application
 ```bash
-# Development
+# Development mode
 npm run dev
 
 # Or use built executable
 ./releases/wait-weather-linux
-```
-
-### CLI Mode (Command Line)  
-```bash
-# Development
-npm run dev:cli
-
-# Direct commands
-wait-cli current "London"
-wait-cli forecast "New York" 5
 ```
 
 ### Building Executables
