@@ -93,7 +93,7 @@ class WeatherTUI {
             left: 0,
             width: '100%',
             height: 3,
-            content: '{center}🌤️  WAIT - Weather App In Terminal{/center}',
+            content: '{center}WAIT - Weather App In Terminal{/center}',
             tags: true,
             style: {
                 fg: 'white',
@@ -116,11 +116,11 @@ class WeatherTUI {
             width: '40%',
             height: '70%',
             items: [
-                '📍 Enter Location',
-                '🌡️  Current Weather',
-                '📅 Weather Forecast (3 days)',
-                '⚙️  Settings',
-                '❌ Exit'
+                '1. Enter Location',
+                '2. Current Weather',
+                '3. Weather Forecast (3 days)',
+                '4. Settings',
+                '5. Exit'
             ],
             keys: true,
             vi: true,
@@ -361,7 +361,7 @@ class WeatherTUI {
         const content = [
             `{center}{bold}Current Weather for ${weather.location}{/bold}{/center}`,
             '',
-            `🌡️  Temperature: {bold}${formatTemperature(weather.temperature, 'celsius')}{/bold}`,
+            `🌡️ Temperature: {bold}${formatTemperature(weather.temperature, 'celsius')}{/bold}`,
             `📖 Condition: {bold}${weather.description}{/bold}`,
             `💧 Humidity: {bold}${weather.humidity}%{/bold}`,
             `💨 Wind Speed: {bold}${weather.windSpeed} km/h{/bold}`,
@@ -369,13 +369,13 @@ class WeatherTUI {
         ];
 
         if (weather.feelsLike !== undefined) {
-            content.push(`🌡️  Feels Like: {bold}${formatTemperature(weather.feelsLike, 'celsius')}{/bold}`);
+            content.push(`🌡️ Feels Like: {bold}${formatTemperature(weather.feelsLike, 'celsius')}{/bold}`);
         }
         if (weather.pressure !== undefined) {
             content.push(`📊 Pressure: {bold}${weather.pressure} mb{/bold}`);
         }
         if (weather.visibility !== undefined) {
-            content.push(`👁️  Visibility: {bold}${weather.visibility} km{/bold}`);
+            content.push(`👁️ Visibility: {bold}${weather.visibility} km{/bold}`);
         }
 
         content.push('', '{center}Press ESC to return to menu{/center}');
