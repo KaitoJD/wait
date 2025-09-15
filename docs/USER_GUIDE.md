@@ -11,12 +11,11 @@
 5. [Step 2: Download or Build WAIT](#step-2-download-or-build-wait)
 6. [Step 3: Set Up Your Environment](#step-3-set-up-your-environment)
 7. [Step 4: Run WAIT](#step-4-run-wait)
-8. [How to Use WAIT](#how-to-use-wait)
-9. [Keyboard Navigation](#keyboard-navigation)
-10. [Menu Options](#menu-options)
-11. [Common Issues and Solutions](#common-issues-and-solutions)
-12. [Tips and Tricks](#tips-and-tricks)
-13. [Getting Help](#getting-help)
+8. [Keyboard Navigation](#keyboard-navigation)
+9. [Menu Options](#menu-options)
+10. [Common Issues and Solutions](#common-issues-and-solutions)
+11. [Tips and Tricks](#tips-and-tricks)
+12. [Getting Help](#getting-help)
 
 ---
 
@@ -133,9 +132,9 @@ $env:WEATHER_API_KEY="your_api_key_here"
 
 ### Using Executable:
 ```bash
-./wait-linux          # Linux
-./wait-macos           # macOS
-wait-win.exe           # Windows
+./wait-linux    # Linux
+./wait-macos    # macOS
+wait-win.exe    # Windows
 ```
 
 ### Using NPM (if built from source):
@@ -143,26 +142,6 @@ wait-win.exe           # Windows
 npm start
 # or
 npm run dev
-```
-
-## How to Use WAIT
-
-When you start WAIT, you'll see a beautiful interface with:
-
-```
-┌─────────────────────────────────────────┐
-│        WAIT - Weather App In Terminal    │
-├─────────────────────────────────────────┤
-│ Main Menu          │ Weather Information │
-│                    │                     │
-│ 1. Enter Location  │ Select an option    │
-│ 2. Current Weather │ from the menu to    │
-│ 3. Weather Forecast│ get started         │
-│ 4. Settings        │                     │
-│ 5. Exit            │                     │
-└─────────────────────────────────────────┘
-│ Press ↑/↓ to navigate, Enter to select   │
-└─────────────────────────────────────────┘
 ```
 
 ## Keyboard Navigation
@@ -269,16 +248,3 @@ echo $env:WEATHER_API_KEY # Windows PowerShell
 2. **Verify internet connection**
 3. **Confirm API key is set correctly**
 4. **Try a different location name**
-
----
-
-## What's Next?
-
-Now that you have WAIT set up:
-
-1. **Explore all features** - Try different locations and menu options
-2. **Customize your setup** - Add the executable to your PATH
-3. **Share with friends** - WAIT makes a great terminal demo!
-4. **Contribute** - Check out the source code and contribute improvements
-
-**Enjoy your new terminal weather app! 🌤️**

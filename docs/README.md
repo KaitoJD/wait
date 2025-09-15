@@ -1,6 +1,4 @@
-# Documentation Index
-
-Welcome to the WAIT (Weather App Interactive Terminal) documentation! This directory contains comprehensive guides for using, developing, and contributing to the WAIT TUI application.
+# WAIT - Documentation Index
 
 ## Table of Contents
 
@@ -12,11 +10,8 @@ Welcome to the WAIT (Weather App Interactive Terminal) documentation! This direc
    - [For New Users (Non-Programmers)](#for-new-users-non-programmers)
    - [For End Users (Some Technical Experience)](#for-end-users-some-technical-experience)
    - [For Developers](#for-developers)
-4. [Quick Reference](#quick-reference)
-   - [Quick Navigation](#quick-navigation)
-   - [Project Structure](#project-structure)
-5. [Getting Help](#getting-help)
-6. [Documentation Updates](#documentation-updates)
+4. [Getting Help](#getting-help)
+5. [Documentation Updates](#documentation-updates)
 
 ---
 
@@ -62,40 +57,6 @@ Welcome to the WAIT (Weather App Interactive Terminal) documentation! This direc
 2. [Architecture Documentation](ARCHITECTURE.md) - Understand the codebase
 3. [Development Guide](DEVELOPMENT.md) - Learn to extend the application
 4. [Contributing Guide](CONTRIBUTING.md) - Contribute to the project
-
-## Quick Reference
-
-### Quick Navigation
-```bash
-# Install and setup
-npm install
-cp .env.example .env  # Add your API key
-
-# Development
-npm run dev  # Opens interactive TUI
-
-# Production  
-npm run build
-node dist/app.js  # Opens interactive TUI
-
-# TUI Navigation:
-# Use arrow keys ↑↓ to navigate menu
-# Press Enter to select options
-# Press 'q' to quit application
-```
-
-### Project Structure
-```
-docs/
-├── README.md          # This file - Documentation index
-├── USER_GUIDE.md      # Simple guide for everyone
-├── INSTALLATION.md    # Setup guide
-├── USAGE.md           # Command reference
-├── EXAMPLES.md        # Example outputs
-├── DEVELOPMENT.md     # Developer guide
-├── CONTRIBUTING.md    # Contribution guide
-└── ARCHITECTURE.md    # Technical architecture
-```
 
 ## Getting Help
 
