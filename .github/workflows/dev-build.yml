@@ -9,7 +9,7 @@ on:
       create_executables:
         description: 'Create executable files'
         required: false
-        default: 'true'
+        default: true
         type: boolean
 
 jobs:
