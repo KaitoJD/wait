@@ -1,207 +1,60 @@
-# Usage Guide
+# WAIT - Usage Guide
 
-## Table of Contents
+Quick reference for using WAIT (Weather App In Terminal).
 
-1. [Easy Usage with Scripts](#easy-usage-with-scripts)
-2. [Commands Overview](#commands-overview)
-3. [Current Weather](#current-weather)
-   - [Using Wrapper Scripts (Recommended)](#using-wrapper-scripts-recommended)
-   - [Direct npm Commands](#direct-npm-commands)
-   - [Using Aliases](#using-aliases)
-   - [After Building](#after-building)
-4. [Weather Forecast](#weather-forecast)
-   - [Using Wrapper Scripts (Recommended)](#using-wrapper-scripts-recommended-1)
-   - [Direct npm Commands](#direct-npm-commands-1)
-5. [Location Formats](#location-formats)
-   - [Recommended Formats](#recommended-formats)
-   - [Tips for Better Results](#tips-for-better-results)
-6. [First Time Setup](#first-time-setup)
-   - [Using Wrapper Scripts (Easiest)](#using-wrapper-scripts-easiest)
-   - [Manual Setup](#manual-setup)
-7. [Command Options](#command-options)
-   - [Getting Help](#getting-help)
-   - [Version Information](#version-information)
-8. [Error Handling](#error-handling)
-9. [Development vs Production](#development-vs-production)
-   - [Development Mode](#development-mode)
-   - [Production Mode](#production-mode)
-10. [Advanced Usage](#advanced-usage)
-    - [Environment-specific Configuration](#environment-specific-configuration)
+## Quick Start
 
----
+1. **Launch**: Run `./wait-linux` (or `npm start`)
+2. **Set Location**: Choose option 1, enter city name (e.g., "London, UK")
+3. **Get Weather**: Choose option 2 (current) or 3 (forecast)
 
-## Easy Usage with Scripts
+## Navigation
 
-For convenience, we provide wrapper scripts that make using the Weather CLI much easier:
+| Key | Action |
+|-----|--------|
+| `↑/↓` | Navigate menu |
+| `Enter` | Select item |
+| `Escape` | Go back |
+| `q` | Quit |
 
-### Linux/macOS Users
-```bash
-./weather.sh current "London"
-./weather.sh forecast "Paris" 5
-./weather.sh setup  # First time setup
-```
+## Menu Options
 
-### Windows Users
-```cmd
-weather.bat current "London"
-weather.bat forecast "Paris" 5
-weather.bat setup  REM First time setup
-```
+1. **Enter Location**: Set your city/location for weather queries. Formats: `London`, `New York, NY`, `Paris, France`, coordinates
+2. **Current Weather**: Shows temperature, conditions, humidity, wind, pressure
+3. **Weather Forecast**: 3-day forecast with highs/lows and conditions  
+4. **Settings**: View API key status and configuration
+5. **Exit**: Close application
 
-## Commands Overview
+## Location Setup
 
-The Weather CLI provides two main commands with aliases for convenience:
+**Supported formats:**
+- `London` (major cities)
+- `Austin, TX` (US cities) 
+- `Paris, France` (international)
+- `51.5074,-0.1278` (coordinates)
 
-- `current` (alias: `now`) - Get current weather
-- `forecast` (alias: `fc`) - Get weather forecast
-- `--help` - Show help information
-- `--version` - Show version information
+**Tips:** Include country/state for accuracy, use official city names.
 
-## Current Weather
+## Configuration
 
-Get real-time weather information for any location:
+**Settings Menu** shows:
+- Current location status
+- API key status (✓ configured / ✗ missing)
+- Setup instructions if needed
 
-### Using Wrapper Scripts (Recommended)
-```bash
-# Linux/macOS
-./weather.sh current "London"
-./weather.sh now "New York, NY"
+**Weather Data:**
+- Temperature in Celsius (°C)
+- Conditions, humidity, wind (km/h), pressure (mb)
+- Real-time data from WeatherAPI.com
 
-# Windows
-weather.bat current "London"
-weather.bat now "New York, NY"
-```
+## Troubleshooting
 
-### Direct npm Commands
-```bash
-npm run dev current "London"
-npm run dev current "New York, NY"
-npm run dev current "Tokyo, Japan"
-```
+**Common Issues:**
 
-### Using Aliases
-```bash
-npm run dev now "Berlin"
-```
+- **"Please set location first"** → Use menu option 1
+- **API key errors** → Check Settings menu, verify environment variable  
+- **"Failed to fetch weather data"** → Check internet, try different location format
+- **Broken display** → Ensure terminal is 80x24+, use monospaced font
+- **Navigation issues** → Check terminal has focus, try different terminal app
 
-### After Building
-```bash
-node dist/app.js current "Paris"
-```
-
-## Weather Forecast
-
-Get weather forecast for multiple days (1-10 days):
-
-### Using Wrapper Scripts (Recommended)
-```bash
-# Linux/macOS
-./weather.sh forecast "London"      # Default 3 days
-./weather.sh forecast "Paris" 5     # Custom number of days
-./weather.sh fc "Tokyo" 7           # Using alias
-
-# Windows  
-weather.bat forecast "London"       # Default 3 days
-weather.bat forecast "Paris" 5      # Custom number of days
-weather.bat fc "Tokyo" 7            # Using alias
-```
-
-### Direct npm Commands
-```bash
-npm run dev forecast "London"       # Default 3 days
-npm run dev forecast "Paris" 5      # Custom number of days
-npm run dev fc "Tokyo" 7            # Using alias
-```
-
-## Location Formats
-
-The application accepts various location formats:
-
-### Recommended Formats
-- `"London"` - City name
-- `"New York, NY"` - City, State
-- `"London, UK"` - City, Country
-- `"Paris, Ile-de-France, France"` - City, Region, Country
-
-### Tips for Better Results
-- Use specific location names for accuracy
-- Include state/province for US/Canadian cities
-- Add country name for international locations
-- Famous landmarks work as reference points
-
-## First Time Setup
-
-### Using Wrapper Scripts (Easiest)
-```bash
-# Linux/macOS
-./weather.sh setup
-
-# Windows
-weather.bat setup
-```
-
-This will automatically:
-- Install all dependencies
-- Create `.env` file from template
-- Build the TypeScript project
-- Provide setup instructions
-
-### Manual Setup
-If you prefer to set up manually, follow the [Installation Guide](INSTALLATION.md).
-
-## Command Options
-
-### Getting Help
-```bash
-# Using wrapper scripts
-./weather.sh help        # Linux/macOS
-weather.bat help         # Windows
-
-# Using npm directly
-npm run dev -- --help
-
-# Command-specific help
-npm run dev current --help
-npm run dev forecast --help
-```
-
-### Version Information
-```bash
-npm run dev -- --version
-```
-
-## Error Handling
-
-The CLI provides helpful error messages:
-
-- **Invalid location**: Suggestions for proper location format
-- **Network issues**: Clear indication of connectivity problems  
-- **API errors**: Specific guidance for API-related issues
-- **Invalid parameters**: Help with correct command usage
-
-## Development vs Production
-
-### Development Mode
-```bash
-npm run dev current "London"
-```
-
-### Production Mode
-```bash
-# Build first
-npm run build
-
-# Run built version
-node dist/app.js current "London"
-```
-
-## Advanced Usage
-
-### Environment-specific Configuration
-```bash
-# Use different API endpoint
-WEATHER_API_BASE_URL="https://custom-api.com/v1" npm run dev current "London"
-
-# Debug mode (if implemented)
-DEBUG=true npm run dev current "London"
-```
+**Quick fixes:** Check API key in Settings, test with simple location like "London"

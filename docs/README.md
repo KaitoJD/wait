@@ -1,6 +1,4 @@
-# Documentation Index
-
-Welcome to the Weather CLI documentation! This directory contains comprehensive guides for using, developing, and contributing to the Weather CLI application.
+# WAIT - Documentation Index
 
 ## Table of Contents
 
@@ -12,11 +10,8 @@ Welcome to the Weather CLI documentation! This directory contains comprehensive 
    - [For New Users (Non-Programmers)](#for-new-users-non-programmers)
    - [For End Users (Some Technical Experience)](#for-end-users-some-technical-experience)
    - [For Developers](#for-developers)
-4. [Quick Reference](#quick-reference)
-   - [Essential Commands](#essential-commands)
-   - [Project Structure](#project-structure)
-5. [Getting Help](#getting-help)
-6. [Documentation Updates](#documentation-updates)
+4. [Getting Help](#getting-help)
+5. [Documentation Updates](#documentation-updates)
 
 ---
 
@@ -25,8 +20,8 @@ Welcome to the Weather CLI documentation! This directory contains comprehensive 
 ### Getting Started
 - **[User Guide](USER_GUIDE.md)** - **Start here if you're new!** Simple guide for non-programmers
 - **[Installation Guide](INSTALLATION.md)** - Complete setup instructions with troubleshooting
-- **[Usage Guide](USAGE.md)** - Command reference and usage examples
-- **[Examples](EXAMPLES.md)** - Real command examples with expected output
+- **[Usage Guide](USAGE.md)** - TUI navigation and feature reference
+- **[Examples](EXAMPLES.md)** - Real usage examples and walkthroughs
 
 ### Development
 - **[Development Guide](DEVELOPMENT.md)** - Contributing code and extending functionality
@@ -54,7 +49,7 @@ Welcome to the Weather CLI documentation! This directory contains comprehensive 
 
 ### For End Users (Some Technical Experience)
 1. [Installation Guide](INSTALLATION.md) - Get up and running
-2. [Usage Guide](USAGE.md) - Learn the commands  
+2. [Usage Guide](USAGE.md) - Learn the TUI navigation  
 3. [Examples](EXAMPLES.md) - See real examples
 
 ### For Developers
@@ -62,36 +57,6 @@ Welcome to the Weather CLI documentation! This directory contains comprehensive 
 2. [Architecture Documentation](ARCHITECTURE.md) - Understand the codebase
 3. [Development Guide](DEVELOPMENT.md) - Learn to extend the application
 4. [Contributing Guide](CONTRIBUTING.md) - Contribute to the project
-
-## Quick Reference
-
-### Essential Commands
-```bash
-# Install and setup
-npm install
-cp .env.example .env  # Add your API key
-
-# Development
-npm run dev current "London"
-npm run dev forecast "Paris" 5
-
-# Production
-npm run build
-node dist/app.js current "London"
-```
-
-### Project Structure
-```
-docs/
-├── README.md          # This file - Documentation index
-├── USER_GUIDE.md      # Simple guide for everyone
-├── INSTALLATION.md    # Setup guide
-├── USAGE.md           # Command reference
-├── EXAMPLES.md        # Example outputs
-├── DEVELOPMENT.md     # Developer guide
-├── CONTRIBUTING.md    # Contribution guide
-└── ARCHITECTURE.md    # Technical architecture
-```
 
 ## Getting Help
 
@@ -106,4 +71,4 @@ This documentation is maintained alongside the codebase. When contributing:
 - Update relevant documentation with code changes
 - Add new examples for new features
 - Keep installation instructions current
-- Test all documented commands
+- Test all documented features in the TUI

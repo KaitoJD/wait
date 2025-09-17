@@ -1,0 +1,144 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Executables
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        target:
+          - { platform: 'linux', arch: 'x64', ext: '' }
+          - { platform: 'win32', arch: 'x64', ext: '.exe' }
+          - { platform: 'darwin', arch: 'x64', ext: '' }
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build TypeScript
+        run: npm run build
+
+      - name: Create Executable
+        run: |
+          npx pkg package.json \
+            --target node18-${{ matrix.target.platform }}-${{ matrix.target.arch }} \
+            --output releases/wait-${{ matrix.target.platform }}${{ matrix.target.ext }}
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wait-${{ matrix.target.platform }}-${{ matrix.target.arch }}
+          path: releases/wait-${{ matrix.target.platform }}${{ matrix.target.ext }}
+          retention-days: 30
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+
+      - name: Prepare Release Assets
+        run: |
+          mkdir -p ./release-assets
+          find ./artifacts -type f -exec cp {} ./release-assets/ \;
+          ls -la ./release-assets/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./release-assets/*
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          name: "WAIT Weather TUI ${{ github.ref_name }}"
+          body: |
+            ## WAIT - Weather App In Terminal
+            
+            ### What's New in ${{ github.ref_name }}
+            
+            A beautiful TUI (Text User Interface) weather application with interactive navigation.
+            
+            ### Installation
+            
+            Download the appropriate executable for your platform:
+            - **Linux**: `wait-linux`
+            - **Windows**: `wait-win32.exe` 
+            - **macOS**: `wait-darwin`
+            
+            ### Usage
+            
+            1. Download the executable for your platform
+            2. Make it executable (Linux/macOS): `chmod +x wait-weather-*`
+            3. Set your WeatherAPI key: `export WEATHER_API_KEY="your_key_here"`
+            4. Run the application: `./wait-*`
+            
+            ### Navigation
+            - **↑↓**: Navigate menu items
+            - **Enter**: Select option
+            - **ESC**: Go back
+            - **q**: Quit application
+            
+            ### API Key
+            Get your free API key at [WeatherAPI.com](https://www.weatherapi.com/)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  test:
+    name: Test Build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Build TypeScript
+        run: npm run build
+
+      - name: Verify Build Output
+        run: |
+          echo "Checking build output..."
+          ls -la dist/
+          echo "Verifying main entry point exists..."
+          test -f dist/tui-app.js && echo "Main app built successfully" || exit 1

@@ -1,21 +1,27 @@
 #!/usr/bin/env node
 
-import { Command } from 'commander';
 import { config } from 'dotenv';
-import { registerCommands } from './commands/index';
+import { WeatherTUI } from './tui-app';
 
 // Load environment variables
 config();
 
-const program = new Command();
+/**
+ * Main entry point for the weather application
+ */
+async function main(): Promise<void> {
+    try {
+        // Create and start the TUI application
+        const app = new WeatherTUI();
+        app.run();
+    } catch (error) {
+        console.error('❌ Failed to start weather application:', error);
+        process.exit(1);
+    }
+}
 
-program
-  .name('weather-cli')
-  .description('A CLI application to fetch weather information')
-  .version('1.0.0');
-
-// Register all commands
-registerCommands(program);
-
-// Parse command line arguments
-program.parse(process.argv);
+// Run the application
+main().catch((error) => {
+    console.error('❌ Unhandled error:', error);
+    process.exit(1);
+});

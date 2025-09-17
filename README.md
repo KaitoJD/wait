@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](https://github.com/your-username/wait/releases)
+[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](https://github.com/KaitoJD/wait/releases)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](./LICENSE)
 [![Summer of Making 2025](https://img.shields.io/badge/Summer%20of%20Making-2025-ff6b35.svg)](https://summerofmaking.com/)
 
 </div>
 
-A modern, well-structured command-line interface (CLI) weather app. This is the product participating in the Summer of Making 2025 program.
+A modern, interactive **TUI (Text User Interface)** weather application built with TypeScript and blessed. This project is participating in the **Summer of Making 2025** program.
 
 ## Documentation
 
@@ -21,18 +21,31 @@ A modern, well-structured command-line interface (CLI) weather app. This is the 
 
 ## Features
 
-- **Current Weather**: Get real-time weather information including temperature, humidity, wind speed, and more
-- **Weather Forecast**: View detailed forecasts for up to 10 days
-- **Beautiful Output**: Clean, emoji-enhanced console formatting for easy reading
-- **Error Handling**: Comprehensive error messages with helpful suggestions
+### TUI (Text User Interface) Mode
+- **Interactive Menu System**: Navigate through options with arrow keys
+- **Real-time Display**: Weather information updates in dedicated panels  
+- **Keyboard Navigation**: ESC to go back, Enter to select, q to quit
+- **Beautiful ASCII Interface**: Clean, bordered layout
+- **Location Management**: Easy location entry with input validation
+
+### Cross-Platform Executable
+- **Standalone Executables**: No dependencies required after build
+- **Multi-platform Support**: Windows, macOS, and Linux binaries
+- **Single File Distribution**: Easy deployment and sharing
+
+### Technical Features
 - **TypeScript**: Fully typed for better development experience and code reliability
-- **Extensible Architecture**: Well-organized code structure for easy maintenance and feature additions
+- **Modular Architecture**: Component-based UI system with separation of concerns
+- **Event-Driven**: Robust event management system for user interactions
+- **Error Handling**: Comprehensive error messages with helpful suggestions
+- **Cross-Platform**: Support for Windows, macOS, and Linux executables
+- **Environment Config**: Flexible configuration through environment variables
 
 ## API Integration
 
 This application uses [WeatherAPI.com](https://www.weatherapi.com/) which provides:
 - Current weather conditions
-- Weather forecasts up to 10 days
+- Weather forecasts
 - Global coverage
 - Free tier with generous limits
 
@@ -54,4 +67,4 @@ See the [LICENSE](./LICENSE) file for details.
 
 ---
 
-**Note**: Remember to keep your API key secure and never commit it to version control. Always use environment variables for sensitive configuration.
+_**Note**: Remember to keep your API key secure and never commit it to version control. Always use environment variables for sensitive configuration._

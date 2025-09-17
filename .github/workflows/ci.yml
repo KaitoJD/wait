@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    name: Test and Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Linting (if available)
+        run: |
+          if npm run lint --silent 2>/dev/null; then
+            echo "Running linting..."
+            npm run lint
+          else
+            echo "No linting script found, skipping..."
+          fi
+        continue-on-error: true
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Build TypeScript
+        run: npm run build
+
+      - name: Verify TUI App
+        run: |
+          echo "Verifying build output..."
+          ls -la dist/
+          test -f dist/tui-app.js || (echo "Main TUI app not found!" && exit 1)
+          echo "TUI app built successfully"
+
+      - name: Test Package Creation (Linux only)
+        run: |
+          echo "Testing executable creation..."
+          npx pkg package.json \
+            --target node18-linux-x64 \
+            --output test-executable
+          
+          echo "Executable created successfully"
+          ls -lh test-executable
+          
+          # Clean up test executable
+          rm -f test-executable

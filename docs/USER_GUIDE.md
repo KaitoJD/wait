@@ -1,257 +1,250 @@
-# Weather CLI - User Guide
+# WAIT - User Guide
 
-*A simple guide for getting weather information on your computer*
+*A simple guide for using the Weather App In Terminal*
 
 ## Table of Contents
 
-1. [What is Weather CLI?](#what-is-weather-cli)
+1. [What is WAIT?](#what-is-wait)
 2. [What You'll Need](#what-youll-need)
 3. [Setup Overview](#setup-overview)
-4. [Step 1: Install Node.js](#step-1-install-nodejs)
-5. [Step 2: Get a Free Weather API Key](#step-2-get-a-free-weather-api-key)
-6. [Step 3: Download Weather CLI](#step-3-download-weather-cli)
-7. [Step 4: Easy Setup](#step-4-easy-setup)
-8. [Step 5: Test It Out!](#step-5-test-it-out)
-9. [How to Use Weather CLI](#how-to-use-weather-cli)
+4. [Step 1: Get Your Weather API Key](#step-1-get-your-weather-api-key)
+5. [Step 2: Download or Build WAIT](#step-2-download-or-build-wait)
+6. [Step 3: Set Up Your Environment](#step-3-set-up-your-environment)
+7. [Step 4: Run WAIT](#step-4-run-wait)
+8. [Keyboard Navigation](#keyboard-navigation)
+9. [Menu Options](#menu-options)
 10. [Common Issues and Solutions](#common-issues-and-solutions)
-11. [Quick Reference Card](#quick-reference-card)
+11. [Tips and Tricks](#tips-and-tricks)
 12. [Getting Help](#getting-help)
-13. [What's Next?](#whats-next)
 
 ---
 
-## What is Weather CLI?
+## What is WAIT?
 
-Weather CLI is a simple program that lets you check the weather for any city in the world directly from your computer. You type a command, and it shows you current weather or forecasts - no need to open a web browser!
+WAIT (Weather App In Terminal) is a modern, interactive text-based application that displays weather information directly in your terminal. It features:
+
+- **Beautiful TUI Interface**: Navigate with arrow keys through an intuitive menu system
+- **Real-time Weather**: Current conditions and 3-day forecasts
+- **Cross-platform**: Works on Windows, macOS, and Linux
+- **No Dependencies**: Standalone executable files (no need to install Node.js)
+- **Fast and Lightweight**: Instant startup and responsive interface
 
 ## What You'll Need
 
 Before you start, make sure you have:
 
-1. **A computer** running Windows, Mac, or Linux
+1. **A computer** running Windows, macOS, or Linux
 2. **Internet connection** (to get weather data)
-3. **About 10 minutes** to set everything up
-
-Don't worry if you're not tech-savvy - this guide will walk you through everything step by step!
+3. **Terminal/Command Prompt** access
+4. **About 5 minutes** for setup
 
 ## Setup Overview
 
-Here's what we'll do (don't worry, it's easier than it looks!):
+Here's what we'll do:
 
 ```
-Step 1: Install Node.js (one-time setup)
-Step 2: Get free weather API key (like getting a library card)
-Step 3: Download Weather CLI files
-Step 4: Run easy setup script (does everything automatically)
-Step 5: Test it out!
+Step 1: Get free weather API key (like getting a library card)
+Step 2: Download WAIT executable or build from source
+Step 3: Set environment variable for your API key  
+Step 4: Run WAIT and enjoy!
 ```
 
-## Step 1: Install Node.js
+## Step 1: Get Your Weather API Key
 
-### For Windows Users:
-1. Go to [nodejs.org/](https://nodejs.org)
-2. Click the button that says "Download"
-3. Select your computer's operating system and architecture, then download the installer file (`.msi`)
-4. Run the installer file and follow the installation wizzard
+1. **Visit WeatherAPI.com**
+   - Go to [https://www.weatherapi.com/](https://www.weatherapi.com/)
+   - Click "Sign Up Free" (it's completely free!)
 
-### For Mac Users:
-1. Go to [nodejs.org](https://nodejs.org)
-2. Click the button that says "Download"  
-3. Select your computer's operating system and architecture, then download the installer file (`.pkg`)
-4. Open the downloaded `.pkg` file and follow the installation steps
+2. **Create Your Account**
+   - Enter your email and create a password
+   - Verify your email address
 
-### For Linux Users:
-Open Terminal and run:
+3. **Get Your API Key**
+   - After logging in, go to your Dashboard
+   - Copy your API key (it looks like: `abcd1234efgh5678ijkl9012`)
+   - Keep this safe - you'll need it in Step 3!
+
+## Step 2: Download or Build WAIT
+
+### Option A: Download Pre-built Executable (Recommended)
+
+1. **Download for your platform:**
+   - **Linux**: Download `wait-linux`
+   - **Windows**: Download `wait-win.exe`
+   - **macOS**: Download `wait-macos`
+
+2. **Make it executable (Linux/macOS):**
+   ```bash
+   chmod +x wait-linux
+   # or
+   chmod +x wait-macos
+   ```
+
+### Option B: Build from Source
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/KaitoJD/wait.git
+   cd wait
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Build the application:**
+   ```bash
+   npm run build
+   ```
+
+4. **Create executable (optional):**
+   ```bash
+   npm run build:pkg
+   ```
+
+## Step 3: Set Up Your Environment
+
+Set your API key as an environment variable:
+
+### Linux/macOS:
 ```bash
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-sudo apt-get install -y nodejs
+export WEATHER_API_KEY="your_api_key_here"
 ```
 
-## Step 2: Get a Free Weather API Key
+To make it permanent, add to your shell profile:
+```bash
+echo 'export WEATHER_API_KEY="your_api_key_here"' >> ~/.bashrc
+# or ~/.zshrc for Zsh users
+```
 
-To get weather data, you need a free "key" - it's like a library card that lets you access weather information.
-
-1. Go to [weatherapi.com](https://www.weatherapi.com/)
-2. Click "Get API Key Free"
-3. Fill out the form with your email and create a password
-4. Check your email and click the confirmation link
-5. Once logged in, you'll see your API key - it looks like: `abc123def456ghi789`
-6. **Copy this key** - you'll need it in Step 4
-
-**Tip**: The free plan gives you 1 million weather requests per month - more than enough for personal use!
-
-## Step 3: Download Weather CLI
-
-1. Download the Weather CLI files to your computer
-2. Extract/unzip them to a folder like:
-   - Windows: `C:\weather-cli`
-   - Mac/Linux: `/home/username/weather-cli`
-3. Remember where you put this folder!
-
-## Step 4: Easy Setup
-
-Now comes the easy part! Weather CLI has a setup script that does all the hard work for you.
-
-### Windows Users:
-1. Open File Explorer and go to your weather-cli folder
-2. Double-click on `weather.bat`
-3. Type: `setup` and press Enter
-4. Wait for it to download and install everything
-5. When it asks for your API key, paste the key you got from Step 2
-
-### Mac/Linux Users:
-1. Open Terminal (press Cmd+Space and type "Terminal" on Mac)
-2. Navigate to your weather-cli folder:
-   ```bash
-   cd /<path_to_your_weather-cli>
-   ```
-3. Run the setup:
-   ```bash
-   ./weather.sh setup
-   ```
-4. When it asks for your API key, paste the key you got from Step 2
-
-**What the setup does:**
-- Downloads all necessary files
-- Creates a configuration file
-- Tests that everything works
-- Takes about 2-3 minutes
-
-## Step 5: Test It Out!
-
-Let's make sure everything works by checking the weather in London:
-
-### Windows:
+### Windows (Command Prompt):
 ```cmd
-weather.bat current "London"
+set WEATHER_API_KEY=your_api_key_here
 ```
 
-### Mac/Linux:
+### Windows (PowerShell):
+```powershell
+$env:WEATHER_API_KEY="your_api_key_here"
+```
+
+## Step 4: Run WAIT
+
+### Using Executable:
 ```bash
-./weather.sh current "London"
+./wait-linux    # Linux
+./wait-macos    # macOS
+wait-win.exe    # Windows
 ```
 
-You should see something like:
-```
-🌤️ Weather Information for London, England, United Kingdom
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🌡️ Temperature: 15°C (feels like 13°C)
-☁️ Condition: Partly cloudy
-💧 Humidity: 72%
-💨 Wind Speed: 11 km/h
-```
-
-🎉 **Congratulations!** If you see weather information, everything is working!
-
-## How to Use Weather CLI
-
-### Check Current Weather
+### Using NPM (if built from source):
 ```bash
-# Windows
-weather.bat current "New York"
-weather.bat current "Tokyo, Japan"
-
-# Mac/Linux  
-./weather.sh current "New York"
-./weather.sh current "Tokyo, Japan"
+npm start
+# or
+npm run dev
 ```
 
-### Get Weather Forecast
-```bash
-# Windows
-weather.bat forecast "Paris"        # 3-day forecast
-weather.bat forecast "Paris" 7      # 7-day forecast
+## Keyboard Navigation
 
-# Mac/Linux
-./weather.sh forecast "Paris"       # 3-day forecast  
-./weather.sh forecast "Paris" 7     # 7-day forecast
-```
+| Key | Action |
+|-----|---------|
+| `↑` `↓` | Navigate menu items |
+| `Enter` | Select menu item |
+| `Escape` | Go back/Cancel |
+| `q` | Quit application |
 
-### Tips for Location Names
-- **Good**: "London", "New York", "Paris, France"
-- **Better**: "London, UK", "New York, NY", "Paris, France"
-- **Best**: "London, England, UK", "New York, NY, USA"
+## Menu Options
 
-More specific = more accurate results!
+### 1. Enter Location
+- **Purpose**: Set your location for weather queries
+- **Usage**: Type city name (e.g., "London", "New York, NY", "Tokyo")
+- **Tips**: Include state/country for accuracy (e.g., "Paris, France")
+
+### 2. Current Weather
+- **Shows**: Temperature, condition, humidity, wind, pressure
+- **Updates**: Real-time current conditions
+- **Requirement**: Location must be set first
+
+### 3. Weather Forecast (3 days)
+- **Shows**: 3-day forecast with daily highs/lows
+- **Details**: Conditions, humidity, wind speed
+- **Requirement**: Location must be set first
+
+### 4. Settings
+- **Shows**: Current configuration and API key status
+- **Information**: Location setting, API status
+- **Help**: Setup instructions if API key missing
+
+### 5. Exit
+- **Action**: Quit the application safely
 
 ## Common Issues and Solutions
 
-### "Command not found" Error
-**Problem**: The computer doesn't recognize the weather command.
+### Problem: "Missing or invalid WEATHER_API_KEY"
 
-**Solution**: 
-- Make sure you're in the right folder (where you put the weather-cli files)
-- On Windows, make sure you're typing `weather.bat`, not just `weather`
+**Solution:**
+1. Check that you've set the environment variable correctly
+2. Verify your API key is valid (32 characters, letters and numbers)
+3. Make sure there are no extra spaces in your API key
 
-### "Invalid API Key" Error
-**Problem**: Your weather API key isn't working.
-
-**Solution**:
-1. Check that you copied the API key correctly (no extra spaces)
-2. Make sure you activated your account via email
-3. Try generating a new key at weatherapi.com
-
-### "Location not found" Error
-**Problem**: The weather service can't find your location.
-
-**Solution**:
-- Try a more specific location: "Springfield, IL" instead of just "Springfield"
-- Use major cities or landmarks as reference points
-- Check spelling of city names
-
-### Internet Connection Issues
-**Problem**: Can't connect to weather service.
-
-**Solution**:
-- Check your internet connection
-- Try again in a few minutes (the service might be busy)
-- Make sure your firewall isn't blocking the program
-
-## Quick Reference Card
-
-Cut this out and keep it handy!
-
+**Test your environment variable:**
+```bash
+echo $WEATHER_API_KEY    # Linux/macOS
+echo %WEATHER_API_KEY%   # Windows CMD
+echo $env:WEATHER_API_KEY # Windows PowerShell
 ```
-┌─ WEATHER CLI QUICK REFERENCE ─┐
-│                               │
-│ Current Weather:              │
-│ Windows: weather.bat current  │
-│ Mac/Linux: ./weather.sh       │
-│                               │
-│ Forecast:                     │
-│ Windows: weather.bat forecast │
-│ Mac/Linux: ./weather.sh       │
-│                               │
-│ Examples:                     │
-│ current "London"              │
-│ forecast "Paris" 5            │
-│                               │
-│ Help:                         │
-│ Windows: weather.bat help     │
-│ Mac/Linux: ./weather.sh help  │
-└───────────────────────────────┘
-```
+
+### Problem: "Failed to fetch weather data"
+
+**Possible causes:**
+1. **No internet connection** - Check your network
+2. **Invalid location** - Try a different city name
+3. **API key quota exceeded** - Check your WeatherAPI.com dashboard
+
+### Problem: Application crashes when selecting weather options
+
+**Solution:**
+- This was fixed in recent versions
+- Make sure you're using the latest executable
+- Check that your API key is properly configured
+
+### Problem: Terminal display looks broken
+
+**Solutions:**
+1. **Resize terminal**: Make sure your terminal is at least 80x24 characters
+2. **Terminal compatibility**: Use a modern terminal (Terminal.app, PowerShell, gnome-terminal)
+3. **Font issues**: Use a monospaced font
+
+## Tips and Tricks
+
+### Pro Tips:
+1. **Set common locations**: Remember frequently used cities for quick access
+2. **Bookmark the application**: Add the executable to your PATH for easy access
+3. **Check settings first**: Use the Settings menu to verify your setup
+
+### Location Tips:
+- **Be specific**: "Springfield, IL" vs "Springfield, MA"
+- **International cities**: "Paris, France" vs "Paris, TX"
+- **Coordinates work**: You can use latitude,longitude (e.g., "40.7128,-74.0060")
+
+### Keyboard Shortcuts:
+- **Quick exit**: Press `q` from anywhere to quit
+- **Fast navigation**: Use arrow keys for smooth menu navigation
+- **Cancel input**: Press `Escape` when typing location to cancel
 
 ## Getting Help
 
-If you run into problems:
+### In the Application:
+- **Settings Menu**: Check API key status and get setup help
+- **Error Messages**: Follow the detailed instructions provided
 
-1. **Try the help command**:
-   - Windows: `weather.bat help`
-   - Mac/Linux: `./weather.sh help`
+### Online Resources:
+- **GitHub Issues**: Report bugs or ask questions
+- **Documentation**: Check the `docs/` folder for detailed guides
+- **WeatherAPI Support**: Visit WeatherAPI.com for API-related issues
 
-2. **Check your internet connection** - the program needs internet to get weather data
-
-3. **Make sure you're in the right folder** - the one with the weather files
-
-4. **Double-check your API key** - make sure it was copied correctly
-
-## What's Next?
-
-Once you're comfortable with the basics:
-
-- Try different cities around the world
-- Check forecasts for your weekend plans
-- Set up shortcuts on your desktop for quick access
-- Share weather info with friends and family
-- Enjoy your new weather tool :D
+### Quick Troubleshooting:
+1. **Check Settings menu** for configuration status
+2. **Verify internet connection**
+3. **Confirm API key is set correctly**
+4. **Try a different location name**
