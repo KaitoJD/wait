@@ -1,89 +1,54 @@
-# Installation Guide
+# WAIT - Installation Guide
 
-> **New to programming?** Check out our [User Guide](USER_GUIDE.md) instead - it's written in plain English with step-by-step instructions for everyone!
-
-This guide is for users with some technical experience who want detailed installation instructions.
-
-## Table of Contents
-
-1. [Prerequisites](#prerequisites)
-2. [Setup Steps](#setup-steps)
-   - [1. Clone the Repository](#1-clone-the-repository)
-   - [2. Install Dependencies](#2-install-dependencies)
-   - [3. Configure Your API Key](#3-configure-your-api-key)
-   - [4. Build the Application](#4-build-the-application)
-3. [Verification](#verification)
-4. [Environment Variables](#environment-variables)
-5. [Troubleshooting](#troubleshooting)
-   - [API Key Issues](#api-key-issues)
-   - [Build Issues](#build-issues)
-   - [Network Issues](#network-issues)
-
----
+> **New to programming?** Check out [User Guide](USER_GUIDE.md) for step-by-step instructions.
 
 ## Prerequisites
-- Node.js (version 16 or higher)
-- npm or yarn
-- A free API key from [WeatherAPI.com](https://www.weatherapi.com/)
 
-## Setup Steps
+- **Pre-built**: Windows 10+, macOS 10.15+, or Linux with modern terminal
+- **Build from source**: Node.js 18+, npm, Git
 
-### 1. Clone the Repository
+## Option 1: Pre-built Executables
+
+1. Download for your platform: `wait-linux`, `wait-win.exe`, or `wait-macos`
+2. Make executable (Linux/macOS): `chmod +x wait-linux`
+3. Optionally add to PATH for global access
+
+## Option 2: Build from Source
+
 ```bash
-git clone <your-repository-url>
-cd weather-cli
-```
-
-### 2. Install Dependencies
-```bash
+git clone https://github.com/KaitoJD/wait.git
+cd wait
 npm install
+npm run build        # Development build
+npm run build:pkg    # Create executables in releases/
+npm start            # Run application
 ```
 
-### 3. Configure Your API Key
-```bash
-# Copy the example environment file
-cp .env.example .env
+## Configuration
 
-# Edit .env and add your API key
-# Get a free API key at: https://www.weatherapi.com/
-echo "WEATHER_API_KEY=your_actual_api_key_here" > .env
-```
+1. Get a free API key from [WeatherAPI.com](https://www.weatherapi.com/)
+2. Set environment variable:
+   - **Linux/macOS**: `export WEATHER_API_KEY="your_key"`
+   - **Windows**: `set WEATHER_API_KEY=your_key`
 
-### 4. Build the Application
-```bash
-npm run build
-```
+## Quick Test
 
-## Verification
+1. Run the application: `./wait-linux` or `npm start`
+2. Enter a location and check current weather
 
-Test your installation by running:
-```bash
-npm run dev -- --help
-```
+## Development
 
-You should see the CLI help output with available commands.
-
-## Environment Variables
-
-- `WEATHER_API_KEY` (required): Your WeatherAPI.com API key
-- `WEATHER_API_BASE_URL` (optional): Custom API base URL (defaults to WeatherAPI.com)
+- Use VS Code with TypeScript and ESLint extensions
+- Available scripts: `npm run dev`, `npm run build`, `npm run build:pkg`
+- See [DEVELOPMENT.md](DEVELOPMENT.md) for details
 
 ## Troubleshooting
 
-### API Key Issues
-If you see API key errors:
-1. Ensure your `.env` file exists in the project root
-2. Verify your API key is valid at [WeatherAPI.com](https://www.weatherapi.com/)
-3. Make sure there are no extra spaces in your `.env` file
+Common issues and solutions:
 
-### Build Issues
-If the build fails:
-1. Ensure you have Node.js 16 or higher: `node --version`
-2. Clear node_modules and reinstall: `rm -rf node_modules && npm install`
-3. Check for TypeScript errors: `npm run build`
+- **API Key Error**: Verify `WEATHER_API_KEY` environment variable is set correctly
+- **Build Fails**: Update to Node.js 18+, clear npm cache with `npm cache clean --force`
+- **Terminal Issues**: Ensure modern terminal with UTF-8 support, minimum 80x24 size
+- **Network Error**: Check internet connection and firewall settings
 
-### Network Issues
-If API requests fail:
-1. Check your internet connection
-2. Verify the API endpoint is accessible
-3. Try with a different location name
+For more help, see GitHub Issues or other documentation in the `docs/` folder.

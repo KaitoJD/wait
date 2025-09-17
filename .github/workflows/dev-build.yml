@@ -1,0 +1,79 @@
+name: Development Build
+
+on:
+  push:
+    branches: 
+      - master
+  workflow_dispatch:
+    inputs:
+      create_executables:
+        description: 'Create executable files'
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  dev-build:
+    name: Development Build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[build]')
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build TypeScript
+        run: npm run build
+
+      - name: Create Development Executables
+        if: github.event.inputs.create_executables == 'true' || github.event.inputs.create_executables == null
+        run: |
+          echo "Creating development executables..."
+          
+          # Create releases directory
+          mkdir -p releases
+          
+          # Build for all platforms
+          echo "Building Linux executable..."
+          npx pkg package.json --target node18-linux-x64 --output releases/wait-linux
+          
+          echo "Building Windows executable..."  
+          npx pkg package.json --target node18-win32-x64 --output releases/wait-windows.exe
+          
+          echo "Building macOS executable..."
+          npx pkg package.json --target node18-darwin-x64 --output releases/wait-macos
+          
+          echo "All executables created!"
+          ls -lh releases/
+
+      - name: Upload Development Build
+        if: github.event.inputs.create_executables == 'true' || github.event.inputs.create_executables == null
+        uses: actions/upload-artifact@v4
+        with:
+          name: wait-dev-build-${{ github.sha }}
+          path: releases/
+          retention-days: 7
+
+      - name: Build Summary
+        run: |
+          echo "## Development Build Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Artifacts Created:" >> $GITHUB_STEP_SUMMARY
+          echo "- Linux: \`wait-linux\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Windows: \`wait-windows.exe\`" >> $GITHUB_STEP_SUMMARY  
+          echo "- macOS: \`wait-macos\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### How to Test:" >> $GITHUB_STEP_SUMMARY
+          echo "1. Download artifacts from this workflow run" >> $GITHUB_STEP_SUMMARY
+          echo "2. Extract and make executable: \`chmod +x wait-*\`" >> $GITHUB_STEP_SUMMARY
+          echo "3. Set API key: \`export WEATHER_API_KEY=\"your_key\"\`" >> $GITHUB_STEP_SUMMARY
+          echo "4. Run: \`./wait-linux\`" >> $GITHUB_STEP_SUMMARY
