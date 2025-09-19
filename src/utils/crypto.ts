@@ -8,20 +8,16 @@ export class ApiKeyCrypto {
     private static readonly ALGORITHM = 'aes-256-cbc';
     private static readonly KEY_LENGTH = 32;
     private static readonly IV_LENGTH = 16;
+    private static readonly STATIC_SALT = 'wait-weather-app-som2025-salt';
+    private static readonly APP_IDENTIFIER = 'wait-weather-app-v1.0.0-som2025';
 
     /**
-     * Derive an encryption key from application metadata
-     * This creates a deterministic key based on app properties
+     * Derive an encryption key from static application metadata
+     * This creates a deterministic key that works across all environments
      */
     private static deriveKey(): Buffer {
-        const appMetadata = [
-            'wait-weather-app',
-            process.version,
-            process.platform,
-            'som2025'
-        ].join('|');
-
-        return crypto.scryptSync(appMetadata, 'weather-api-salt', this.KEY_LENGTH);
+        // Use static, environment-independent values for consistent key derivation
+        return crypto.scryptSync(this.APP_IDENTIFIER, this.STATIC_SALT, this.KEY_LENGTH);
     }
 
     /**
@@ -36,15 +32,23 @@ export class ApiKeyCrypto {
             let encrypted = cipher.update(apiKey, 'utf8', 'hex');
             encrypted += cipher.final('hex');
             
-            // Combine IV + encrypted data
+            // Create a payload with version info for debugging
+            const payload = {
+                version: '1.0.0',
+                algorithm: this.ALGORITHM,
+                encrypted: encrypted
+            };
+            
+            // Combine IV + payload
+            const payloadBuffer = Buffer.from(JSON.stringify(payload), 'utf8');
             const combined = Buffer.concat([
                 iv,
-                Buffer.from(encrypted, 'hex')
+                payloadBuffer
             ]);
 
             return combined.toString('base64');
         } catch (error) {
-            throw new Error(`Failed to encrypt API key: ${error}`);
+            throw new Error(`Failed to encrypt API key: ${error instanceof Error ? error.message : 'Unknown error'}`);
         }
     }
 
@@ -58,16 +62,32 @@ export class ApiKeyCrypto {
             
             // Extract components
             const iv = combined.slice(0, this.IV_LENGTH);
-            const encrypted = combined.slice(this.IV_LENGTH);
+            const payloadBuffer = combined.slice(this.IV_LENGTH);
             
-            const decipher = crypto.createDecipheriv(this.ALGORITHM, key, iv);
+            let payload: any;
+            try {
+                payload = JSON.parse(payloadBuffer.toString('utf8'));
+            } catch {
+                // Fallback for old format - treat entire buffer as encrypted data
+                const decipher = crypto.createDecipheriv(this.ALGORITHM, key, iv);
+                let decrypted = decipher.update(payloadBuffer, undefined, 'utf8');
+                decrypted += decipher.final('utf8');
+                return decrypted;
+            }
             
-            let decrypted = decipher.update(encrypted, undefined, 'utf8');
+            // New format with payload
+            if (!payload.encrypted) {
+                throw new Error('Invalid encrypted data format');
+            }
+            
+            const decipher = crypto.createDecipheriv(payload.algorithm || this.ALGORITHM, key, iv);
+            let decrypted = decipher.update(Buffer.from(payload.encrypted, 'hex'), undefined, 'utf8');
             decrypted += decipher.final('utf8');
             
             return decrypted;
         } catch (error) {
-            throw new Error('Failed to decrypt embedded API key');
+            const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+            throw new Error(`Failed to decrypt embedded API key: ${errorMsg}. The executable may have been built with a different version or the encrypted data is corrupted.`);
         }
     }
 
