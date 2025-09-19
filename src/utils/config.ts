@@ -25,10 +25,14 @@ function getApiKey(): string | null {
             
             if (Validator.isValidApiKey(decryptedKey)) {
                 return decryptedKey;
+            } else {
+                console.warn('Warning: Decrypted embedded API key is invalid');
             }
         } catch (error) {
-            // Silently fail and continue to error handling below
-            console.warn('Warning: Failed to decrypt embedded API key');
+            // More detailed error logging for debugging
+            const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+            console.warn(`Warning: Failed to decrypt embedded API key: ${errorMsg}`);
+            console.warn(`Build metadata: ${JSON.stringify(BUILD_METADATA)}`);
         }
     }
 

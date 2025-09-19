@@ -41,6 +41,28 @@ function loadCryptoUtils() {
 }
 
 /**
+ * Test encryption/decryption before embedding
+ */
+function testEncryption(ApiKeyCrypto, apiKey) {
+    try {
+        console.log('🧪 Testing encryption/decryption...');
+        const encrypted = ApiKeyCrypto.encryptApiKey(apiKey);
+        const decrypted = ApiKeyCrypto.decryptApiKey(encrypted);
+        
+        if (decrypted === apiKey) {
+            console.log('✅ Encryption test passed');
+            return true;
+        } else {
+            console.error('❌ Encryption test failed: decrypted key does not match original');
+            return false;
+        }
+    } catch (error) {
+        console.error('❌ Encryption test failed:', error.message);
+        return false;
+    }
+}
+
+/**
  * Embed encrypted API key into the source code
  */
 function embedApiKey(apiKey) {
@@ -48,6 +70,12 @@ function embedApiKey(apiKey) {
         console.log('🔐 Encrypting API key...');
         
         const ApiKeyCrypto = loadCryptoUtils();
+        
+        // Test encryption before proceeding
+        if (!testEncryption(ApiKeyCrypto, apiKey)) {
+            throw new Error('Encryption test failed');
+        }
+        
         const encryptedKey = ApiKeyCrypto.encryptApiKey(apiKey);
         const obfuscatedParts = ApiKeyCrypto.obfuscateEncryptedKey(encryptedKey);
         
@@ -172,6 +200,12 @@ export const BUILD_METADATA = {
 };`;
             fs.writeFileSync(embeddedKeyPath, emptyKeyContent);
         } else {
+            // Validate API key format before embedding
+            if (!apiKey || apiKey.length < 10) {
+                console.error('❌ Invalid API key provided. API key must be at least 10 characters long.');
+                process.exit(1);
+            }
+            
             // Embed the API key
             if (!embedApiKey(apiKey)) {
                 process.exit(1);
