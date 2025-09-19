@@ -6,16 +6,13 @@
 
 1. [What is WAIT?](#what-is-wait)
 2. [What You'll Need](#what-youll-need)
-3. [Setup Overview](#setup-overview)
-4. [Step 1: Get Your Weather API Key](#step-1-get-your-weather-api-key)
-5. [Step 2: Download or Build WAIT](#step-2-download-or-build-wait)
-6. [Step 3: Set Up Your Environment](#step-3-set-up-your-environment)
-7. [Step 4: Run WAIT](#step-4-run-wait)
-8. [Keyboard Navigation](#keyboard-navigation)
-9. [Menu Options](#menu-options)
-10. [Common Issues and Solutions](#common-issues-and-solutions)
-11. [Tips and Tricks](#tips-and-tricks)
-12. [Getting Help](#getting-help)
+3. [Quick Setup](#quick-setup)
+4. [Running WAIT](#running-wait)
+5. [Keyboard Navigation](#keyboard-navigation)
+6. [Menu Options](#menu-options)
+7. [Common Issues and Solutions](#common-issues-and-solutions)
+8. [Tips and Tricks](#tips-and-tricks)
+9. [Getting Help](#getting-help)
 
 ---
 
@@ -28,6 +25,7 @@ WAIT (Weather App In Terminal) is a modern, interactive text-based application t
 - **Cross-platform**: Works on Windows, macOS, and Linux
 - **No Dependencies**: Standalone executable files (no need to install Node.js)
 - **Fast and Lightweight**: Instant startup and responsive interface
+- **Embedded API Key**: Pre-built executables include a securely encrypted API key
 
 ## What You'll Need
 
@@ -36,112 +34,39 @@ Before you start, make sure you have:
 1. **A computer** running Windows, macOS, or Linux
 2. **Internet connection** (to get weather data)
 3. **Terminal/Command Prompt** access
-4. **About 5 minutes** for setup
+4. **About 2 minutes** for setup
 
-## Setup Overview
+## Quick Setup
 
-Here's what we'll do:
+**Pre-built executables include a securely embedded API key - no configuration needed!**
 
-```
-Step 1: Get free weather API key (like getting a library card)
-Step 2: Download WAIT executable or build from source
-Step 3: Set environment variable for your API key  
-Step 4: Run WAIT and enjoy!
-```
+### Step 1: Download WAIT executable
 
-## Step 1: Get Your Weather API Key
+**Download for your platform:**
+- **Linux**: Download `wait-linux`
+- **Windows**: Download `wait-win.exe`
+- **macOS**: Download `wait-macos`
 
-1. **Visit WeatherAPI.com**
-   - Go to [https://www.weatherapi.com/](https://www.weatherapi.com/)
-   - Click "Sign Up Free" (it's completely free!)
+### Step 2: Make executable (Linux/macOS only)
 
-2. **Create Your Account**
-   - Enter your email and create a password
-   - Verify your email address
-
-3. **Get Your API Key**
-   - After logging in, go to your Dashboard
-   - Copy your API key (it looks like: `abcd1234efgh5678ijkl9012`)
-   - Keep this safe - you'll need it in Step 3!
-
-## Step 2: Download or Build WAIT
-
-### Option A: Download Pre-built Executable (Recommended)
-
-1. **Download for your platform:**
-   - **Linux**: Download `wait-linux`
-   - **Windows**: Download `wait-win.exe`
-   - **macOS**: Download `wait-macos`
-
-2. **Make it executable (Linux/macOS):**
-   ```bash
-   chmod +x wait-linux
-   # or
-   chmod +x wait-macos
-   ```
-
-### Option B: Build from Source
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/KaitoJD/wait.git
-   cd wait
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Build the application:**
-   ```bash
-   npm run build
-   ```
-
-4. **Create executable (optional):**
-   ```bash
-   npm run build:pkg
-   ```
-
-## Step 3: Set Up Your Environment
-
-Set your API key as an environment variable:
-
-### Linux/macOS:
 ```bash
-export WEATHER_API_KEY="your_api_key_here"
+chmod +x wait-linux
+# or
+chmod +x wait-macos
 ```
 
-To make it permanent, add to your shell profile:
-```bash
-echo 'export WEATHER_API_KEY="your_api_key_here"' >> ~/.bashrc
-# or ~/.zshrc for Zsh users
-```
+### Step 3: Run and enjoy!
 
-### Windows (Command Prompt):
-```cmd
-set WEATHER_API_KEY=your_api_key_here
-```
+No API key setup required - just run the application!
 
-### Windows (PowerShell):
-```powershell
-$env:WEATHER_API_KEY="your_api_key_here"
-```
+## Running WAIT
 
-## Step 4: Run WAIT
+Simply run the executable for your platform:
 
-### Using Executable:
 ```bash
 ./wait-linux    # Linux
 ./wait-macos    # macOS
-wait-win.exe    # Windows
-```
-
-### Using NPM (if built from source):
-```bash
-npm start
-# or
-npm run dev
+wait-win.exe    # Windows (double-click or run from Command Prompt)
 ```
 
 ## Keyboard Navigation
@@ -172,8 +97,8 @@ npm run dev
 
 ### 4. Settings
 - **Shows**: Current configuration and API key status
-- **Information**: Location setting, API status
-- **Help**: Setup instructions if API key missing
+- **Information**: Location setting, API status (should show ✓ configured)
+- **Note**: Pre-built executables automatically show API key as configured
 
 ### 5. Exit
 - **Action**: Quit the application safely
@@ -182,31 +107,18 @@ npm run dev
 
 ### Problem: "Missing or invalid WEATHER_API_KEY"
 
-**Solution:**
-1. Check that you've set the environment variable correctly
-2. Verify your API key is valid (32 characters, letters and numbers)
-3. Make sure there are no extra spaces in your API key
+This shouldn't happen with pre-built executables as the API key is embedded. If you encounter this:
 
-**Test your environment variable:**
-```bash
-echo $WEATHER_API_KEY    # Linux/macOS
-echo %WEATHER_API_KEY%   # Windows CMD
-echo $env:WEATHER_API_KEY # Windows PowerShell
-```
+1. **Try re-downloading** the executable from the official source
+2. **Check platform compatibility** - make sure you downloaded the right version for your OS
+3. **Verify file integrity** - the executable might be corrupted
 
 ### Problem: "Failed to fetch weather data"
 
 **Possible causes:**
 1. **No internet connection** - Check your network
-2. **Invalid location** - Try a different city name
-3. **API key quota exceeded** - Check your WeatherAPI.com dashboard
-
-### Problem: Application crashes when selecting weather options
-
-**Solution:**
-- This was fixed in recent versions
-- Make sure you're using the latest executable
-- Check that your API key is properly configured
+2. **Invalid location** - Try a different city name or format
+3. **Firewall blocking** - Check if your firewall allows the application to access the internet
 
 ### Problem: Terminal display looks broken
 
@@ -215,17 +127,25 @@ echo $env:WEATHER_API_KEY # Windows PowerShell
 2. **Terminal compatibility**: Use a modern terminal (Terminal.app, PowerShell, gnome-terminal)
 3. **Font issues**: Use a monospaced font
 
+### Problem: Application won't start
+
+**Solutions:**
+1. **Permission issues (Linux/macOS)**: Make sure you ran `chmod +x` on the executable
+2. **Security warnings (macOS)**: You may need to allow the app in Security & Privacy settings
+3. **Antivirus software**: Some antivirus may flag the executable - add it to whitelist if needed
+
 ## Tips and Tricks
 
 ### Pro Tips:
 1. **Set common locations**: Remember frequently used cities for quick access
-2. **Bookmark the application**: Add the executable to your PATH for easy access
+2. **Add to PATH**: Add the executable to your system PATH for easy access from anywhere
 3. **Check settings first**: Use the Settings menu to verify your setup
 
 ### Location Tips:
 - **Be specific**: "Springfield, IL" vs "Springfield, MA"
-- **International cities**: "Paris, France" vs "Paris, TX"
+- **International cities**: "Paris, France" vs "Paris, TX"  
 - **Coordinates work**: You can use latitude,longitude (e.g., "40.7128,-74.0060")
+- **Major cities**: Often just the city name works (e.g., "London", "Tokyo", "Sydney")
 
 ### Keyboard Shortcuts:
 - **Quick exit**: Press `q` from anywhere to quit
@@ -234,17 +154,13 @@ echo $env:WEATHER_API_KEY # Windows PowerShell
 
 ## Getting Help
 
-### In the Application:
-- **Settings Menu**: Check API key status and get setup help
-- **Error Messages**: Follow the detailed instructions provided
-
 ### Online Resources:
-- **GitHub Issues**: Report bugs or ask questions
-- **Documentation**: Check the `docs/` folder for detailed guides
-- **WeatherAPI Support**: Visit WeatherAPI.com for API-related issues
+- **GitHub Issues**: Report bugs or ask questions at the project repository
+- **Documentation**: Check the `docs/` folder for additional guides
 
-### Quick Troubleshooting:
-1. **Check Settings menu** for configuration status
+### Quick Troubleshooting Checklist:
+1. **Check Settings menu** - API key should show as configured automatically
 2. **Verify internet connection**
-3. **Confirm API key is set correctly**
-4. **Try a different location name**
+3. **Try a simple location** like "London" or "New York"
+4. **Check terminal size** (minimum 80x24 characters)
+5. **Re-download executable** if problems persist

@@ -10,6 +10,8 @@
     "start": "ts-node src/app.ts",
     "build": "tsc",
     "build:pkg": "tsc && pkg package.json",
+    "build:secure": "node scripts/build-secure.js",
+    "build:secure:skip-pkg": "node scripts/build-secure.js --skip-pkg",
     "dev": "ts-node src/app.ts",
     "test": "echo \"No tests specified\" && exit 0"
   },
