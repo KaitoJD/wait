@@ -38,7 +38,7 @@ jobs:
         run: npm test
 
       - name: Build TypeScript
-        run: npm run build
+        run: npm run build:secure:skip-pkg
 
       - name: Verify TUI App
         run: |

@@ -36,8 +36,8 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Build TypeScript
-        run: npm run build
+      - name: Build with Secure Build Process
+        run: npm run build:secure:skip-pkg
 
       - name: Create Executable
         run: |
@@ -134,7 +134,7 @@ jobs:
         run: npm test
 
       - name: Build TypeScript
-        run: npm run build
+        run: npm run build:secure:skip-pkg
 
       - name: Verify Build Output
         run: |

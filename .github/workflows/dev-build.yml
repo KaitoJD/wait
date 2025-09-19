@@ -31,8 +31,8 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Build TypeScript
-        run: npm run build
+      - name: Build with Secure Build Process
+        run: npm run build:secure:skip-pkg
 
       - name: Create Development Executables
         if: github.event.inputs.create_executables == 'true' || github.event.inputs.create_executables == null
