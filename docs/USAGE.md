@@ -42,6 +42,8 @@ Quick reference for using WAIT (Weather App In Terminal).
 - API key status (✓ configured / ✗ missing)
 - Setup instructions if needed
 
+**Note**: Pre-built executables include an embedded encrypted API key, so you should see "✓ configured" automatically.
+
 **Weather Data:**
 - Temperature in Celsius (°C)
 - Conditions, humidity, wind (km/h), pressure (mb)
@@ -52,7 +54,8 @@ Quick reference for using WAIT (Weather App In Terminal).
 **Common Issues:**
 
 - **"Please set location first"** → Use menu option 1
-- **API key errors** → Check Settings menu, verify environment variable  
+- **API key errors (pre-built executables)** → Shouldn't happen as key is embedded; try re-downloading executable
+- **API key errors (source builds)** → Check Settings menu, verify environment variable  
 - **"Failed to fetch weather data"** → Check internet, try different location format
 - **Broken display** → Ensure terminal is 80x24+, use monospaced font
 - **Navigation issues** → Check terminal has focus, try different terminal app
