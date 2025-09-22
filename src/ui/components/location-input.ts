@@ -10,6 +10,7 @@ export class LocationInput {
             height: 3,
             keys: true,
             mouse: true,
+            inputOnFocus: true,  // Automatically enter input mode when focused
             style: {
                 fg: 'white',
                 bg: 'black',
@@ -37,8 +38,14 @@ export class LocationInput {
         }
         
         locationInput.show();
-        locationInput.focus();
         locationInput.screen.render();
+        
+        // Use setImmediate to ensure proper focus after render
+        setImmediate(() => {
+            locationInput.focus();
+            locationInput.readInput();  // Explicitly start input mode
+            locationInput.screen.render();
+        });
     }
 
     static hide(locationInput: blessed.Widgets.TextboxElement): void {
@@ -53,7 +60,18 @@ export class LocationInput {
             onCancel: () => void;
         }
     ): void {
+        // Handle both 'submit' event and explicit Enter key
         locationInput.on('submit', (value: string) => {
+            const location = value.trim();
+            if (location) {
+                callbacks.onSubmit(location);
+            }
+            LocationInput.hide(locationInput);
+        });
+
+        // Also handle Enter key explicitly to ensure proper input handling
+        locationInput.key(['enter'], () => {
+            const value = locationInput.getValue();
             const location = value.trim();
             if (location) {
                 callbacks.onSubmit(location);
