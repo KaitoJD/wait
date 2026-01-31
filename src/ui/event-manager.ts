@@ -19,8 +19,55 @@ export class EventManager {
             return process.exit(0);
         });
 
+        // Tab key to toggle focus between menu and weather display
+        this.components.screen.key(['tab'], () => {
+            this.toggleFocus();
+        });
+
+        // Setup weather display scroll and focus handlers
+        this.setupWeatherDisplayHandlers();
+
         // Focus management
         this.components.menu.focus();
+    }
+
+    private setupWeatherDisplayHandlers(): void {
+        const weatherDisplay = this.components.weatherDisplay;
+
+        // Handle focus events to update status bar
+        weatherDisplay.on('focus', () => {
+            StatusBar.showWeatherViewHelp(this.components.statusBar);
+        });
+
+        weatherDisplay.on('blur', () => {
+            StatusBar.showDefault(this.components.statusBar);
+        });
+
+        // Allow clicking on weather display to focus it
+        weatherDisplay.on('click', () => {
+            weatherDisplay.focus();
+            this.components.screen.render();
+        });
+
+        // Handle mouse wheel scrolling
+        weatherDisplay.on('wheeldown', () => {
+            weatherDisplay.scroll(3);
+            this.components.screen.render();
+        });
+
+        weatherDisplay.on('wheelup', () => {
+            weatherDisplay.scroll(-3);
+            this.components.screen.render();
+        });
+    }
+
+    private toggleFocus(): void {
+        if (this.components.menu === this.components.screen.focused) {
+            this.components.weatherDisplay.focus();
+        } else {
+            this.components.menu.focus();
+        }
+        this.components.screen.render();
     }
 
     private setupMenuHandlers(): void {

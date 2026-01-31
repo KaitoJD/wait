@@ -7,7 +7,8 @@ export class ScreenManager {
             title: 'WAIT - Weather App In Terminal',
             autoPadding: true,
             dockBorders: true,
-            warnings: false
+            warnings: false,
+            mouse: true
         });
 
         // Handle pkg compatibility issues
