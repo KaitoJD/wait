@@ -19,8 +19,38 @@ export class EventManager {
             return process.exit(0);
         });
 
+        // Tab key to toggle focus between menu and weather display
+        this.components.screen.key(['tab'], () => {
+            this.toggleFocus();
+        });
+
+        // Setup weather display scroll and focus handlers
+        this.setupWeatherDisplayHandlers();
+
         // Focus management
         this.components.menu.focus();
+    }
+
+    private setupWeatherDisplayHandlers(): void {
+        const weatherDisplay = this.components.weatherDisplay;
+
+        // Handle focus events to update status bar
+        weatherDisplay.on('focus', () => {
+            StatusBar.showWeatherViewHelp(this.components.statusBar);
+        });
+
+        weatherDisplay.on('blur', () => {
+            StatusBar.showDefault(this.components.statusBar);
+        });
+    }
+
+    private toggleFocus(): void {
+        if (this.components.menu === this.components.screen.focused) {
+            this.components.weatherDisplay.focus();
+        } else {
+            this.components.menu.focus();
+        }
+        this.components.screen.render();
     }
 
     private setupMenuHandlers(): void {
@@ -129,7 +159,7 @@ export class EventManager {
         try {
             // Import config module to check API key status
             const configModule = await import('../utils/config');
-            const apiKeyStatus = configModule.isConfigValid() ? 'Configured ✓' : 'Not configured ✗';
+            const apiKeyStatus = configModule.isConfigValid() ? 'Configured' : 'Not configured';
             
             const settingsContent = `Settings:
 
@@ -140,7 +170,7 @@ Configuration:
 • Weather API: WeatherAPI.com
 • Base URL: ${process.env.WEATHER_API_BASE_URL || 'https://api.weatherapi.com/v1'}
 
-${apiKeyStatus.includes('✗') ? 'To configure API key:\n1. Get free API key at: https://www.weatherapi.com/\n2. Set environment variable: export WEATHER_API_KEY="your_key"\n3. Restart application\n' : ''}
+${apiKeyStatus === 'Not configured' ? 'To configure API key:\n1. Get free API key at: https://www.weatherapi.com/\n2. Set environment variable: export WEATHER_API_KEY="your_key"\n3. Restart application\n' : ''}
 Available Actions:
 1. Change API Key (requires restart)
 2. Clear Cache  

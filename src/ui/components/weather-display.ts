@@ -14,8 +14,22 @@ export class WeatherDisplay {
             alwaysScroll: true,
             keys: true,
             vi: true,
+            scrollbar: {
+                ch: '│',
+                track: {
+                    bg: 'gray'
+                },
+                style: {
+                    inverse: true
+                }
+            },
             style: {
-                fg: 'white'
+                fg: 'white',
+                focus: {
+                    border: {
+                        fg: 'cyan'
+                    }
+                }
             },
             border: {
                 type: 'line'
