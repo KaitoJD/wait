@@ -14,7 +14,6 @@ export class WeatherDisplay {
             alwaysScroll: true,
             keys: true,
             vi: true,
-            mouse: true,
             scrollbar: {
                 ch: '│',
                 track: {

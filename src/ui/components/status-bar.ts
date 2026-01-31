@@ -40,7 +40,7 @@ export class StatusBar {
     }
 
     static showWeatherViewHelp(statusBar: blessed.Widgets.BoxElement): void {
-        StatusBar.updateMessage(statusBar, 'Use ↑/↓ or mouse wheel to scroll, Tab for menu, q to quit');
+        StatusBar.updateMessage(statusBar, 'Use ↑/↓ to scroll, Tab for menu, q to quit');
     }
 
     static showLocationInputHelp(statusBar: blessed.Widgets.BoxElement): void {

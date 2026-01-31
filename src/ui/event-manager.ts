@@ -42,23 +42,6 @@ export class EventManager {
         weatherDisplay.on('blur', () => {
             StatusBar.showDefault(this.components.statusBar);
         });
-
-        // Allow clicking on weather display to focus it
-        weatherDisplay.on('click', () => {
-            weatherDisplay.focus();
-            this.components.screen.render();
-        });
-
-        // Handle mouse wheel scrolling
-        weatherDisplay.on('wheeldown', () => {
-            weatherDisplay.scroll(3);
-            this.components.screen.render();
-        });
-
-        weatherDisplay.on('wheelup', () => {
-            weatherDisplay.scroll(-3);
-            this.components.screen.render();
-        });
     }
 
     private toggleFocus(): void {
@@ -176,7 +159,7 @@ export class EventManager {
         try {
             // Import config module to check API key status
             const configModule = await import('../utils/config');
-            const apiKeyStatus = configModule.isConfigValid() ? 'Configured ✓' : 'Not configured ✗';
+            const apiKeyStatus = configModule.isConfigValid() ? 'Configured' : 'Not configured';
             
             const settingsContent = `Settings:
 
@@ -187,7 +170,7 @@ Configuration:
 • Weather API: WeatherAPI.com
 • Base URL: ${process.env.WEATHER_API_BASE_URL || 'https://api.weatherapi.com/v1'}
 
-${apiKeyStatus.includes('✗') ? 'To configure API key:\n1. Get free API key at: https://www.weatherapi.com/\n2. Set environment variable: export WEATHER_API_KEY="your_key"\n3. Restart application\n' : ''}
+${apiKeyStatus === 'Not configured' ? 'To configure API key:\n1. Get free API key at: https://www.weatherapi.com/\n2. Set environment variable: export WEATHER_API_KEY="your_key"\n3. Restart application\n' : ''}
 Available Actions:
 1. Change API Key (requires restart)
 2. Clear Cache  
