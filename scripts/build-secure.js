@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-// Import the crypto utilities (we'll compile them first)
+// Import the crypto utilities
 function loadCryptoUtils() {
     try {
         // Ensure temp directory exists
@@ -35,7 +35,7 @@ function loadCryptoUtils() {
         const { ApiKeyCrypto } = require(cryptoPath);
         return ApiKeyCrypto;
     } catch (error) {
-        console.error('❌ Failed to compile crypto utilities:', error.message);
+        console.error('Failed to compile crypto utilities:', error.message);
         process.exit(1);
     }
 }
@@ -45,19 +45,19 @@ function loadCryptoUtils() {
  */
 function testEncryption(ApiKeyCrypto, apiKey) {
     try {
-        console.log('🧪 Testing encryption/decryption...');
+        console.log('Testing encryption/decryption...');
         const encrypted = ApiKeyCrypto.encryptApiKey(apiKey);
         const decrypted = ApiKeyCrypto.decryptApiKey(encrypted);
         
         if (decrypted === apiKey) {
-            console.log('✅ Encryption test passed');
+            console.log('Encryption test passed');
             return true;
         } else {
-            console.error('❌ Encryption test failed: decrypted key does not match original');
+            console.error('Encryption test failed: decrypted key does not match original');
             return false;
         }
     } catch (error) {
-        console.error('❌ Encryption test failed:', error.message);
+        console.error('Encryption test failed:', error.message);
         return false;
     }
 }
@@ -67,7 +67,7 @@ function testEncryption(ApiKeyCrypto, apiKey) {
  */
 function embedApiKey(apiKey) {
     try {
-        console.log('🔐 Encrypting API key...');
+        console.log('Encrypting API key...');
         
         const ApiKeyCrypto = loadCryptoUtils();
         
@@ -79,7 +79,7 @@ function embedApiKey(apiKey) {
         const encryptedKey = ApiKeyCrypto.encryptApiKey(apiKey);
         const obfuscatedParts = ApiKeyCrypto.obfuscateEncryptedKey(encryptedKey);
         
-        console.log('📦 Embedding encrypted key into source...');
+        console.log('Embedding encrypted key into source...');
         
         const embeddedKeyPath = path.join(process.cwd(), 'src/utils/embedded-key.ts');
         const buildTime = new Date().toISOString();
@@ -107,11 +107,11 @@ export const BUILD_METADATA = {
 };`;
 
         fs.writeFileSync(embeddedKeyPath, embeddedKeyContent);
-        console.log('✅ API key successfully embedded');
+        console.log('API key successfully embedded');
         
         return true;
     } catch (error) {
-        console.error('❌ Failed to embed API key:', error.message);
+        console.error('Failed to embed API key:', error.message);
         return false;
     }
 }
@@ -125,7 +125,7 @@ function cleanup() {
             fs.rmSync('temp', { recursive: true });
         }
     } catch (error) {
-        console.warn('⚠️  Warning: Failed to clean temporary files:', error.message);
+        console.warn('Warning: Failed to clean temporary files:', error.message);
     }
 }
 
@@ -137,7 +137,7 @@ function main() {
     
     if (args.includes('--help') || args.includes('-h')) {
         console.log(`
-🔨 WAIT Secure Build Tool
+WAIT Secure Build Tool
 
 Usage: node build-secure.js [options]
 
@@ -162,7 +162,7 @@ Examples:
         return;
     }
 
-    console.log('🚀 Starting secure build process...');
+    console.log('Starting secure build process...');
     
     try {
         // Get API key from argument or environment
@@ -175,7 +175,7 @@ Examples:
         }
         
         if (!apiKey) {
-            console.log('ℹ️  No API key provided, building without embedded key...');
+            console.log('No API key provided, building without embedded key...');
             
             // Reset embedded key file to empty state
             const embeddedKeyPath = path.join(process.cwd(), 'src/utils/embedded-key.ts');
@@ -202,7 +202,7 @@ export const BUILD_METADATA = {
         } else {
             // Validate API key format before embedding
             if (!apiKey || apiKey.length < 10) {
-                console.error('❌ Invalid API key provided. API key must be at least 10 characters long.');
+                console.error('Invalid API key provided. API key must be at least 10 characters long.');
                 process.exit(1);
             }
             
@@ -213,20 +213,20 @@ export const BUILD_METADATA = {
         }
         
         // Compile TypeScript
-        console.log('🔧 Compiling TypeScript...');
+        console.log('Compiling TypeScript...');
         execSync('npm run build', { stdio: 'inherit' });
         
         // Create executables unless --skip-pkg is specified
         if (!args.includes('--skip-pkg')) {
-            console.log('📦 Creating executables...');
+            console.log('Creating executables...');
             execSync('npm run build:pkg', { stdio: 'inherit' });
-            console.log('✅ Executables created successfully');
+            console.log('Executables created successfully');
         }
         
-        console.log('🎉 Build completed successfully!');
+        console.log('Build completed successfully!');
         
     } catch (error) {
-        console.error('❌ Build failed:', error.message);
+        console.error('Build failed:', error.message);
         process.exit(1);
     } finally {
         cleanup();
