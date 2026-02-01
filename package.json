@@ -16,14 +16,14 @@
     "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
-    "axios": "^1.13.2",
+    "axios": "^1.13.3",
     "blessed": "^0.1.81",
     "dotenv": "^17.2.3"
   },
   "devDependencies": {
     "@types/blessed": "^0.1.27",
-    "@types/node": "^25.0.3",
-    "pkg": "^5.8.1",
+    "@types/node": "^25.0.10",
+    "@yao-pkg/pkg": "^6.12.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.9.3"
   },
@@ -45,9 +45,9 @@
       "node_modules/blessed/**/*"
     ],
     "targets": [
-      "node18-win-x64",
-      "node18-macos-x64", 
-      "node18-linux-x64"
+      "node20-win-x64",
+      "node20-macos-x64",
+      "node20-linux-x64"
     ],
     "outputPath": "releases"
   }
