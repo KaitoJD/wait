@@ -7,7 +7,7 @@ export class StatusBar {
             left: 0,
             width: '100%',
             height: 1,
-            content: ' Press ↑/↓ to navigate, Enter to select, q to quit',
+            content: ' Press ↑/↓ to navigate, Enter to select, Tab to switch focus, q to quit',
             style: {
                 fg: 'white',
                 bg: 'blue'
@@ -36,7 +36,11 @@ export class StatusBar {
     }
 
     static showDefault(statusBar: blessed.Widgets.BoxElement): void {
-        StatusBar.updateMessage(statusBar, 'Press ↑/↓ to navigate, Enter to select, q to quit');
+        StatusBar.updateMessage(statusBar, 'Press ↑/↓ to navigate, Enter to select, Tab to switch focus, q to quit');
+    }
+
+    static showWeatherViewHelp(statusBar: blessed.Widgets.BoxElement): void {
+        StatusBar.updateMessage(statusBar, 'Use ↑/↓ to scroll, Tab for menu, q to quit');
     }
 
     static showLocationInputHelp(statusBar: blessed.Widgets.BoxElement): void {
