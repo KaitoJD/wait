@@ -11,9 +11,10 @@ export class Menu {
             items: [
                 '1. Enter Location',
                 '2. Current Weather',
-                '3. Weather Forecast (3 days)',
-                '4. Settings',
-                '5. Exit'
+                '3. Air Quality',
+                '4. Weather Forecast (3 days)',
+                '5. Settings',
+                '6. Exit'
             ],
             keys: true,
             vi: true,
@@ -40,6 +41,7 @@ export class Menu {
         callbacks: {
             onEnterLocation: () => void;
             onCurrentWeather: () => void;
+            onAirQuality: () => void;
             onForecast: () => void;
             onSettings: () => void;
             onExit: () => void;
@@ -47,19 +49,22 @@ export class Menu {
     ): void {
         menu.on('select', async (item: any, index: number) => {
             switch (index) {
-                case 0: // Enter Location
+                case 0:
                     callbacks.onEnterLocation();
                     break;
-                case 1: // Current Weather
+                case 1:
                     callbacks.onCurrentWeather();
                     break;
-                case 2: // Weather Forecast
+                case 2:
+                    callbacks.onAirQuality();
+                    break;
+                case 3:
                     callbacks.onForecast();
                     break;
-                case 3: // Settings
+                case 4:
                     callbacks.onSettings();
                     break;
-                case 4: // Exit
+                case 5:
                     callbacks.onExit();
                     break;
             }
