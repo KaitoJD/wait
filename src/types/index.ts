@@ -24,6 +24,18 @@ export interface ForecastData {
     }>;
 }
 
+export interface AirQualityData {
+    location: string;
+    co: number;
+    o3: number;
+    no2: number;
+    so2: number;
+    pm2_5: number;
+    pm10: number;
+    usEpaIndex: number;
+    gbDefraIndex: number;
+}
+
 // API response interfaces (adjust based on your weather API)
 export interface ApiWeatherResponse {
     location: {
@@ -41,6 +53,16 @@ export interface ApiWeatherResponse {
         feelslike_c: number;
         vis_km: number;
         pressure_mb: number;
+        air_quality?: {
+            co: number;
+            o3: number;
+            no2: number;
+            so2: number;
+            pm2_5: number;
+            pm10: number;
+            'us-epa-index': number;
+            'gb-defra-index': number;
+        };
     };
 }
 
@@ -87,4 +109,4 @@ export interface TUIState {
     currentLocation?: string;
 }
 
-export type ViewType = 'menu' | 'weather' | 'forecast' | 'settings';
+export type ViewType = 'menu' | 'weather' | 'airquality' | 'forecast' | 'settings';
