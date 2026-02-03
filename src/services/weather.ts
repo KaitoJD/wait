@@ -1,5 +1,5 @@
 import { ApiClient } from './api';
-import { WeatherData, ForecastData, ApiWeatherResponse, ApiForecastResponse, WeatherConfig } from '../types';
+import { WeatherData, ForecastData, AirQualityData, ApiWeatherResponse, ApiForecastResponse, WeatherConfig } from '../types';
 
 /**
  * Weather service for fetching current weather and forecast data
@@ -66,6 +66,38 @@ export class WeatherService {
     }
 
     /**
+     * Get air quality data for a location
+     */
+    async getAirQuality(location: string): Promise<AirQualityData> {
+        try {
+            const response = await this.apiClient.get<ApiWeatherResponse>('/current.json', {
+                q: location,
+                aqi: 'yes'
+            });
+
+            return this.transformAirQualityResponse(response);
+        } catch (error) {
+            throw new Error(`Failed to fetch air quality for "${location}": ${error}`);
+        }
+    }
+
+    /**
+     * Get raw air quality API response for TUI display
+     */
+    async getRawAirQuality(location: string): Promise<ApiWeatherResponse> {
+        try {
+            const response = await this.apiClient.get<ApiWeatherResponse>('/current.json', {
+                q: location,
+                aqi: 'yes'
+            });
+
+            return response;
+        } catch (error) {
+            throw new Error(`Failed to fetch air quality for "${location}": ${error}`);
+        }
+    }
+
+    /**
      * Get raw forecast API response for TUI display
      */
     async getRawForecast(location: string, days: number = 3): Promise<ApiForecastResponse> {
@@ -128,6 +160,30 @@ export class WeatherService {
                 humidity: day.day.avghumidity,
                 windSpeed: Math.round(day.day.maxwind_kph)
             }))
+        };
+    }
+
+    /**
+     * Transform API response to our internal AirQualityData format
+     */
+    private transformAirQualityResponse(response: ApiWeatherResponse): AirQualityData {
+        const { location, current } = response;
+        const aqi = current.air_quality;
+        
+        if (!aqi) {
+            throw new Error('Air quality data not available for this location');
+        }
+        
+        return {
+            location: `${location.name}, ${location.region}, ${location.country}`,
+            co: Math.round(aqi.co * 100) / 100,
+            o3: Math.round(aqi.o3 * 100) / 100,
+            no2: Math.round(aqi.no2 * 100) / 100,
+            so2: Math.round(aqi.so2 * 100) / 100,
+            pm2_5: Math.round(aqi.pm2_5 * 100) / 100,
+            pm10: Math.round(aqi.pm10 * 100) / 100,
+            usEpaIndex: aqi['us-epa-index'],
+            gbDefraIndex: aqi['gb-defra-index']
         };
     }
 }
