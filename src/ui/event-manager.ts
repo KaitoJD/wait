@@ -57,6 +57,7 @@ export class EventManager {
         Menu.setupEventHandlers(this.components.menu, {
             onEnterLocation: () => this.handleEnterLocation(),
             onCurrentWeather: () => this.handleCurrentWeather(),
+            onAirQuality: () => this.handleAirQuality(),
             onForecast: () => this.handleForecast(),
             onSettings: () => this.handleSettings().catch(console.error),
             onExit: () => this.handleExit()
@@ -110,6 +111,46 @@ export class EventManager {
             
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Failed to fetch weather data';
+            StatusBar.showError(this.components.statusBar, errorMessage);
+            WeatherDisplay.showError(this.components.weatherDisplay, errorMessage);
+        }
+    }
+
+    private async handleAirQuality(): Promise<void> {
+        if (!this.currentLocation) {
+            StatusBar.showError(this.components.statusBar, 'Please set location first');
+            return;
+        }
+
+        try {
+            // Check configuration first
+            const configModule = await import('../utils/config');
+            if (!configModule.isConfigValid()) {
+                const errorMsg = configModule.getConfigErrorMessage();
+                StatusBar.showError(this.components.statusBar, 'Configuration error');
+                WeatherDisplay.showError(this.components.weatherDisplay, errorMsg);
+                return;
+            }
+
+            StatusBar.showLoading(this.components.statusBar, 'air quality data');
+            
+            // Import weather service and config
+            const weatherModule = await import('../services/weather');
+            
+            const config = configModule.loadConfig();
+            const weatherService = new weatherModule.WeatherService(config);
+            
+            const airQualityData = await weatherService.getRawAirQuality(this.currentLocation);
+            
+            const formattedAirQuality = WeatherDisplay.formatAirQuality(airQualityData);
+            
+            this.components.weatherDisplay.setContent(formattedAirQuality);
+            this.components.screen.render();
+            
+            StatusBar.showSuccess(this.components.statusBar, 'Air quality data loaded');
+            
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to fetch air quality data';
             StatusBar.showError(this.components.statusBar, errorMessage);
             WeatherDisplay.showError(this.components.weatherDisplay, errorMessage);
         }
