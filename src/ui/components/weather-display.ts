@@ -74,6 +74,44 @@ Visibility: ${current.vis_km} km`;
         return content;
     }
 
+    static formatAirQuality(data: ApiWeatherResponse): string {
+        const { location, current } = data;
+        const aqi = current.air_quality;
+        
+        if (!aqi) {
+            return `Location: ${location.name}, ${location.region}, ${location.country}\n\nAir quality data is not available for this location.`;
+        }
+        
+        const epaIndex = aqi['us-epa-index'];
+        const epaLabels = ['', 'Good', 'Moderate', 'Unhealthy for Sensitive Groups', 'Unhealthy', 'Very Unhealthy', 'Hazardous'];
+        const epaLabel = epaLabels[epaIndex] || 'Unknown';
+        
+        const defraIndex = aqi['gb-defra-index'];
+        let defraLabel = 'Unknown';
+        if (defraIndex >= 1 && defraIndex <= 3) defraLabel = 'Low';
+        else if (defraIndex >= 4 && defraIndex <= 6) defraLabel = 'Moderate';
+        else if (defraIndex >= 7 && defraIndex <= 9) defraLabel = 'High';
+        else if (defraIndex >= 10) defraLabel = 'Very High';
+        
+        return `Location: ${location.name}, ${location.region}, ${location.country}
+
+Air Quality Index:
+US EPA Index: ${epaIndex} (${epaLabel})
+UK DEFRA Index: ${defraIndex} (${defraLabel})
+
+Pollutant Levels:
+Carbon Monoxide (CO): ${aqi.co.toFixed(1)} μg/m³
+Ozone (O3): ${aqi.o3.toFixed(1)} μg/m³
+Nitrogen Dioxide (NO2): ${aqi.no2.toFixed(1)} μg/m³
+Sulphur Dioxide (SO2): ${aqi.so2.toFixed(1)} μg/m³
+PM2.5: ${aqi.pm2_5.toFixed(1)} μg/m³
+PM10: ${aqi.pm10.toFixed(1)} μg/m³
+
+EPA Index Scale:
+  1 = Good | 2 = Moderate | 3 = Unhealthy (Sensitive)
+  4 = Unhealthy | 5 = Very Unhealthy | 6 = Hazardous`;
+    }
+
     static showLoading(weatherBox: blessed.Widgets.BoxElement): void {
         weatherBox.setContent('Loading weather data...\n\nPlease wait while we fetch the latest weather information.');
         weatherBox.screen.render();
