@@ -15,13 +15,13 @@ async function main(): Promise<void> {
         const app = new WeatherTUI();
         app.run();
     } catch (error) {
-        console.error('❌ Failed to start weather application:', error);
+        console.error('Failed to start weather application:', error);
         process.exit(1);
     }
 }
 
 // Run the application
 main().catch((error) => {
-    console.error('❌ Unhandled error:', error);
+    console.error('Unhandled error:', error);
     process.exit(1);
 });

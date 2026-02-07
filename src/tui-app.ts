@@ -75,7 +75,7 @@ async function main(): Promise<void> {
         const app = new WeatherTUI();
         app.run();
     } catch (error) {
-        console.error('❌ Failed to start weather application:', error);
+        console.error('Failed to start weather application:', error);
         process.exit(1);
     }
 }
@@ -83,7 +83,7 @@ async function main(): Promise<void> {
 // Run the application if this file is executed directly
 if (require.main === module) {
     main().catch((error) => {
-        console.error('❌ Unhandled error:', error);
+        console.error('Unhandled error:', error);
         process.exit(1);
     });
 }

@@ -12,14 +12,14 @@ export enum LogLevel {
 export class Logger {
     private static formatMessage(level: LogLevel, message: string): string {
         const timestamp = new Date().toLocaleTimeString();
-        const icons = {
-            [LogLevel.INFO]: 'ℹ️',
-            [LogLevel.WARN]: '⚠️',
-            [LogLevel.ERROR]: '❌',
-            [LogLevel.SUCCESS]: '✅'
+        const indicator = {
+            [LogLevel.INFO]: '[INFO]',
+            [LogLevel.WARN]: '[WARNING]',
+            [LogLevel.ERROR]: '[ERROR]',
+            [LogLevel.SUCCESS]: '[SUCCESS]'
         };
 
-        return `[${timestamp}] ${icons[level]} ${message}`;
+        return `[${timestamp}] ${indicator[level]} ${message}`;
     }
 
     static info(message: string): void {
