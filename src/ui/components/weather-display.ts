@@ -8,7 +8,7 @@ export class WeatherDisplay {
             top: 3,
             left: '40%',
             width: '60%',
-            height: '70%',
+            height: '100%-4',
             content: 'No weather data to display.\n\nPlease select "Enter Location" from the menu to set your location,\nthen choose "Current Weather" to see the weather information.',
             scrollable: true,
             alwaysScroll: true,

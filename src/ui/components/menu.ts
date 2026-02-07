@@ -7,7 +7,7 @@ export class Menu {
             top: 3,
             left: 0,
             width: '40%',
-            height: '70%',
+            height: '100%-4',
             items: [
                 '1. Enter Location',
                 '2. Current Weather',
