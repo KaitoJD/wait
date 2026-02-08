@@ -1,6 +1,6 @@
 import blessed from 'blessed';
 import { TUIComponents } from '../types';
-import { Menu, LocationInput, StatusBar, WeatherDisplay } from './components';
+import { Menu, LocationInput, StatusBar, WeatherDisplay, ForecastDisplay } from './components';
 
 export class EventManager {
     private components: TUIComponents;
@@ -11,6 +11,7 @@ export class EventManager {
         this.setupGlobalHandlers();
         this.setupMenuHandlers();
         this.setupLocationInputHandlers();
+        this.setupForecastListHandlers();
     }
 
     private setupGlobalHandlers(): void {
@@ -69,6 +70,25 @@ export class EventManager {
             onSubmit: (location: string) => this.handleLocationSubmit(location),
             onCancel: () => this.handleLocationCancel()
         });
+    }
+
+    private setupForecastListHandlers(): void {
+        ForecastDisplay.setupEventHandlers(this.components.forecastList, {
+            onBack: () => this.handleForecastBack()
+        });
+
+        // Handle focus events
+        this.components.forecastList.on('focus', () => {
+            StatusBar.updateMessage(this.components.statusBar, 'Enter: toggle hours | B: back to menu | ↑↓: navigate');
+        });
+    }
+
+    private handleForecastBack(): void {
+        ForecastDisplay.hide(this.components.forecastList);
+        this.components.weatherDisplay.show();
+        this.components.menu.focus();
+        StatusBar.showDefault(this.components.statusBar);
+        this.components.screen.render();
     }
 
     private handleEnterLocation(): void {
@@ -168,10 +188,14 @@ export class EventManager {
             if (!configModule.isConfigValid()) {
                 const errorMsg = configModule.getConfigErrorMessage();
                 StatusBar.showError(this.components.statusBar, 'Configuration error');
-                WeatherDisplay.showError(this.components.weatherDisplay, errorMsg);
+                ForecastDisplay.showError(this.components.forecastList, errorMsg);
                 return;
             }
 
+            // Show forecast list and hide weather display
+            this.components.weatherDisplay.hide();
+            ForecastDisplay.show(this.components.forecastList);
+            ForecastDisplay.showLoading(this.components.forecastList);
             StatusBar.showLoading(this.components.statusBar, 'weather forecast');
             
             // Import weather service and config
@@ -182,17 +206,15 @@ export class EventManager {
             
             const forecastData = await weatherService.getRawForecast(this.currentLocation);
             
-            const formattedForecast = WeatherDisplay.formatForecast(forecastData);
+            // Set data in the interactive forecast display
+            ForecastDisplay.setData(this.components.forecastList, forecastData);
             
-            this.components.weatherDisplay.setContent(formattedForecast);
-            this.components.screen.render();
-            
-            StatusBar.showSuccess(this.components.statusBar, 'Forecast data loaded');
+            StatusBar.showSuccess(this.components.statusBar, 'Forecast loaded - Enter to expand day');
             
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Failed to fetch forecast data';
             StatusBar.showError(this.components.statusBar, errorMessage);
-            WeatherDisplay.showError(this.components.weatherDisplay, errorMessage);
+            ForecastDisplay.showError(this.components.forecastList, errorMessage);
         }
     }
 
