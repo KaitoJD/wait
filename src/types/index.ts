@@ -66,6 +66,18 @@ export interface ApiWeatherResponse {
     };
 }
 
+export interface ApiForecastHour {
+    time: string;
+    temp_c: number;
+    condition: {
+        text: string;
+    };
+    humidity: number;
+    wind_kph: number;
+    chance_of_rain: number;
+    feelslike_c: number;
+}
+
 export interface ApiForecastResponse {
     location: {
         name: string;
@@ -84,6 +96,7 @@ export interface ApiForecastResponse {
                 avghumidity: number;
                 maxwind_kph: number;
             };
+            hour: ApiForecastHour[];
         }>;
     };
 }
@@ -99,6 +112,7 @@ export interface TUIComponents {
     screen: blessed.Widgets.Screen;
     menu: blessed.Widgets.ListElement;
     weatherDisplay: blessed.Widgets.BoxElement;
+    forecastList: blessed.Widgets.ListElement;
     locationInput: blessed.Widgets.TextboxElement;
     statusBar: blessed.Widgets.BoxElement;
     header: blessed.Widgets.BoxElement;
