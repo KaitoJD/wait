@@ -71,7 +71,7 @@ export class ForecastDisplay {
             onBack: () => void;
         }
     ): void {
-        forecastList.key(['escape', 'b'], () => {
+        forecastList.key(['b'], () => {
             callbacks.onBack();
         });
 
@@ -164,7 +164,7 @@ export class ForecastDisplay {
         items.push('─'.repeat(50));
         items.push('');
         items.push('Press Enter on a day to toggle hourly forecast');
-        items.push('Press Escape or B to return to menu');
+        items.push('Press B to return to menu');
 
         forecastList.setItems(items);
         forecastList.screen.render();
@@ -222,7 +222,7 @@ export class ForecastDisplay {
             items.push('4. Restart the application');
         } else {
             items.push('Please check your location and try again.');
-            items.push('Press Escape or B to return to menu.');
+            items.push('Press B to return to menu.');
         }
 
         forecastList.setItems(items);
