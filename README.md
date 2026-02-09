@@ -69,23 +69,6 @@ See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for contributing and development 
 
 For technical architecture, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-### Quick Dev Setup
-
-```bash
-git clone https://github.com/KaitoJD/wait.git
-cd wait
-npm install
-export WEATHER_API_KEY="your_key"   # Get free key at weatherapi.com
-npm run dev
-```
-
-### Build Commands
-
-```bash
-npm run build        # Compile TypeScript
-npm run build:pkg    # Create executables
-```
-
 ## License
 
 [CC BY-NC-SA 4.0](./LICENSE) — Free for non-commercial use with attribution.
