@@ -10,6 +10,8 @@ export interface WeatherData {
     feelsLike?: number;
     visibility?: number;
     pressure?: number;
+    uvIndex?: number;
+    precipitation?: number;
 }
 
 export interface ForecastData {
@@ -53,6 +55,8 @@ export interface ApiWeatherResponse {
         feelslike_c: number;
         vis_km: number;
         pressure_mb: number;
+        uv: number;
+        precip_mm: number;
         air_quality?: {
             co: number;
             o3: number;
