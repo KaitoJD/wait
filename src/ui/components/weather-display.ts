@@ -46,13 +46,15 @@ export class WeatherDisplay {
         return `Location: ${location.name}, ${location.region}, ${location.country}
 
 Current Weather:
-Temperature: ${current.temp_c}°C
-Condition: ${current.condition.text}
-Feels Like: ${current.feelslike_c}°C
-Humidity: ${current.humidity}%
-Wind: ${current.wind_kph} km/h
-Pressure: ${current.pressure_mb} mb
-Visibility: ${current.vis_km} km`;
+- Temperature: ${current.temp_c}°C
+- Condition: ${current.condition.text}
+- Feels Like: ${current.feelslike_c}°C
+- Humidity: ${current.humidity}%
+- Wind: ${current.wind_kph} km/h
+- Pressure: ${current.pressure_mb} mb
+- Visibility: ${current.vis_km} km
+- UV Index: ${current.uv}
+- Precipitation: ${current.precip_mm} mm`;
     }
 
     static formatForecast(data: ApiForecastResponse): string {
