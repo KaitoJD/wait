@@ -1,5 +1,6 @@
 import blessed from 'blessed';
-import { ApiWeatherResponse, ApiForecastResponse } from '../../types';
+import { ApiWeatherResponse, ApiForecastResponse, UnitPreferences, DEFAULT_METRIC_PREFERENCES } from '../../types';
+import { formatTemperature, formatWindSpeed, formatPressure, formatVisibility, formatPrecipitation } from '../../utils/formatter';
 
 export class WeatherDisplay {
     static create(screen: blessed.Widgets.Screen): blessed.Widgets.BoxElement {
@@ -40,24 +41,24 @@ export class WeatherDisplay {
         return weatherBox;
     }
 
-    static formatCurrentWeather(data: ApiWeatherResponse): string {
+    static formatCurrentWeather(data: ApiWeatherResponse, units: UnitPreferences = DEFAULT_METRIC_PREFERENCES): string {
         const { location, current } = data;
         
         return `Location: ${location.name}, ${location.region}, ${location.country}
 
 Current Weather:
-- Temperature: ${current.temp_c}°C
+- Temperature: ${formatTemperature(current.temp_c, current.temp_f, units.temperature)}
 - Condition: ${current.condition.text}
-- Feels Like: ${current.feelslike_c}°C
+- Feels Like: ${formatTemperature(current.feelslike_c, current.feelslike_f, units.temperature)}
 - Humidity: ${current.humidity}%
-- Wind: ${current.wind_kph} km/h
-- Pressure: ${current.pressure_mb} mb
-- Visibility: ${current.vis_km} km
+- Wind: ${formatWindSpeed(current.wind_kph, current.wind_mph, units.windSpeed)}
+- Pressure: ${formatPressure(current.pressure_mb, current.pressure_in, units.pressure)}
+- Visibility: ${formatVisibility(current.vis_km, current.vis_miles, units.visibility)}
 - UV Index: ${current.uv}
-- Precipitation: ${current.precip_mm} mm`;
+- Precipitation: ${formatPrecipitation(current.precip_mm, current.precip_in, units.precipitation)}`;
     }
 
-    static formatForecast(data: ApiForecastResponse): string {
+    static formatForecast(data: ApiForecastResponse, units: UnitPreferences = DEFAULT_METRIC_PREFERENCES): string {
         const { location, forecast } = data;
         
         let content = `Location: ${location.name}, ${location.region}, ${location.country}\n\n`;
@@ -67,10 +68,10 @@ Current Weather:
             const dayData = day.day;
             content += `Day ${index + 1} - ${day.date}:\n`;
             content += `  Condition: ${dayData.condition.text}\n`;
-            content += `  Max Temperature: ${dayData.maxtemp_c}°C\n`;
-            content += `  Min Temperature: ${dayData.mintemp_c}°C\n`;
+            content += `  Max Temperature: ${formatTemperature(dayData.maxtemp_c, dayData.maxtemp_f, units.temperature)}\n`;
+            content += `  Min Temperature: ${formatTemperature(dayData.mintemp_c, dayData.mintemp_f, units.temperature)}\n`;
             content += `  Humidity: ${dayData.avghumidity}%\n`;
-            content += `  Max Wind: ${dayData.maxwind_kph} km/h\n\n`;
+            content += `  Max Wind: ${formatWindSpeed(dayData.maxwind_kph, dayData.maxwind_mph, units.windSpeed)}\n\n`;
         });
 
         return content;
