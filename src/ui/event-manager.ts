@@ -1,10 +1,11 @@
 import blessed from 'blessed';
-import { TUIComponents } from '../types';
-import { Menu, LocationInput, StatusBar, WeatherDisplay, ForecastDisplay } from './components';
+import { TUIComponents, UnitPreferences, DEFAULT_METRIC_PREFERENCES } from '../types';
+import { Menu, LocationInput, StatusBar, WeatherDisplay, ForecastDisplay, SettingsDisplay } from './components';
 
 export class EventManager {
     private components: TUIComponents;
     private currentLocation: string = '';
+    private unitPreferences: UnitPreferences = { ...DEFAULT_METRIC_PREFERENCES };
 
     constructor(components: TUIComponents) {
         this.components = components;
@@ -12,6 +13,7 @@ export class EventManager {
         this.setupMenuHandlers();
         this.setupLocationInputHandlers();
         this.setupForecastListHandlers();
+        this.setupSettingsHandlers();
     }
 
     private setupGlobalHandlers(): void {
@@ -83,6 +85,28 @@ export class EventManager {
         });
     }
 
+    private setupSettingsHandlers(): void {
+        SettingsDisplay.setupEventHandlers(this.components.settingsList, {
+            onBack: () => this.handleSettingsBack(),
+            onPreferencesChanged: (preferences: UnitPreferences) => {
+                this.unitPreferences = { ...preferences };
+            }
+        });
+
+        // Handle focus events
+        this.components.settingsList.on('focus', () => {
+            StatusBar.updateMessage(this.components.statusBar, 'Enter: toggle setting | B: back to menu | ↑↓: navigate');
+        });
+    }
+
+    private handleSettingsBack(): void {
+        SettingsDisplay.hide(this.components.settingsList);
+        this.components.weatherDisplay.show();
+        this.components.menu.focus();
+        StatusBar.showDefault(this.components.statusBar);
+        this.components.screen.render();
+    }
+
     private handleForecastBack(): void {
         ForecastDisplay.hide(this.components.forecastList);
         this.components.weatherDisplay.show();
@@ -122,7 +146,7 @@ export class EventManager {
             
             const weatherData = await weatherService.getRawCurrentWeather(this.currentLocation);
             
-            const formattedWeather = WeatherDisplay.formatCurrentWeather(weatherData);
+            const formattedWeather = WeatherDisplay.formatCurrentWeather(weatherData, this.unitPreferences);
             
             this.components.weatherDisplay.setContent(formattedWeather);
             this.components.screen.render();
@@ -207,7 +231,7 @@ export class EventManager {
             const forecastData = await weatherService.getRawForecast(this.currentLocation);
             
             // Set data in the interactive forecast display
-            ForecastDisplay.setData(this.components.forecastList, forecastData);
+            ForecastDisplay.setData(this.components.forecastList, forecastData, this.unitPreferences);
             
             StatusBar.showSuccess(this.components.statusBar, 'Forecast loaded - Enter to expand day');
             
@@ -219,35 +243,10 @@ export class EventManager {
     }
 
     private async handleSettings(): Promise<void> {
-        try {
-            // Import config module to check API key status
-            const configModule = await import('../utils/config');
-            const apiKeyStatus = configModule.isConfigValid() ? 'Configured' : 'Not configured';
-            
-            const settingsContent = `Settings:
-
-Current Location: ${this.currentLocation || 'Not set'}
-API Key Status: ${apiKeyStatus}
-
-Configuration:
-• Weather API: WeatherAPI.com
-• Base URL: ${process.env.WEATHER_API_BASE_URL || 'https://api.weatherapi.com/v1'}
-
-${apiKeyStatus === 'Not configured' ? 'To configure API key:\n1. Get free API key at: https://www.weatherapi.com/\n2. Set environment variable: export WEATHER_API_KEY="your_key"\n3. Restart application\n' : ''}
-Available Actions:
-1. Change API Key (requires restart)
-2. Clear Cache  
-3. Reset Application
-
-Note: Settings functionality can be expanded in future versions.
-Press any key to return to main menu.`;
-
-            this.components.weatherDisplay.setContent(settingsContent);
-            this.components.screen.render();
-            StatusBar.updateMessage(this.components.statusBar, 'Settings view - Press any key to return');
-        } catch (error) {
-            console.error('Error in settings:', error);
-        }
+        // Hide weather display, show settings list
+        this.components.weatherDisplay.hide();
+        SettingsDisplay.show(this.components.settingsList, this.unitPreferences);
+        StatusBar.updateMessage(this.components.statusBar, 'Enter: toggle setting | B: back to menu | ↑↓: navigate');
     }
 
     private handleExit(): void {
@@ -277,5 +276,13 @@ Press any key to return to main menu.`;
 
     public setCurrentLocation(location: string): void {
         this.currentLocation = location;
+    }
+
+    public getUnitPreferences(): UnitPreferences {
+        return { ...this.unitPreferences };
+    }
+
+    public setUnitPreferences(preferences: UnitPreferences): void {
+        this.unitPreferences = { ...preferences };
     }
 }
