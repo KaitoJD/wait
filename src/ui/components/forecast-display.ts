@@ -1,15 +1,18 @@
 import blessed from 'blessed';
-import { ApiForecastResponse, ApiForecastHour } from '../../types';
+import { ApiForecastResponse, ApiForecastHour, UnitPreferences, DEFAULT_METRIC_PREFERENCES } from '../../types';
+import { formatTemperature, formatWindSpeed } from '../../utils/formatter';
 
 export interface ForecastState {
     data: ApiForecastResponse | null;
     expandedDayIndex: number | null;
+    units: UnitPreferences;
 }
 
 export class ForecastDisplay {
     private static state: ForecastState = {
         data: null,
-        expandedDayIndex: null
+        expandedDayIndex: null,
+        units: { ...DEFAULT_METRIC_PREFERENCES }
     };
 
     static create(screen: blessed.Widgets.Screen): blessed.Widgets.ListElement {
@@ -59,9 +62,10 @@ export class ForecastDisplay {
         return forecastList;
     }
 
-    static setData(forecastList: blessed.Widgets.ListElement, data: ApiForecastResponse): void {
+    static setData(forecastList: blessed.Widgets.ListElement, data: ApiForecastResponse, units: UnitPreferences = DEFAULT_METRIC_PREFERENCES): void {
         this.state.data = data;
         this.state.expandedDayIndex = null;
+        this.state.units = { ...units };
         this.render(forecastList);
     }
 
@@ -129,12 +133,13 @@ export class ForecastDisplay {
             const dayData = day.day;
             const isExpanded = this.state.expandedDayIndex === dayIndex;
             const expandIcon = isExpanded ? '>' : '-';
+            const units = this.state.units;
 
             // Day header (selectable)
             items.push(`${expandIcon} Day ${dayIndex + 1} - ${day.date}`);
             items.push(`  ${dayData.condition.text}`);
-            items.push(`  High: ${dayData.maxtemp_c}°C | Low: ${dayData.mintemp_c}°C`);
-            items.push(`  Humidity: ${dayData.avghumidity}% | Wind: ${dayData.maxwind_kph} km/h`);
+            items.push(`  High: ${formatTemperature(dayData.maxtemp_c, dayData.maxtemp_f, units.temperature)} | Low: ${formatTemperature(dayData.mintemp_c, dayData.mintemp_f, units.temperature)}`);
+            items.push(`  Humidity: ${dayData.avghumidity}% | Wind: ${formatWindSpeed(dayData.maxwind_kph, dayData.maxwind_mph, units.windSpeed)}`);
 
             // Show hourly data if expanded
             if (isExpanded && day.hour && day.hour.length > 0) {
@@ -147,7 +152,7 @@ export class ForecastDisplay {
                     const hourData = day.hour[hourIndex];
                     if (hourData) {
                         const time = this.formatTime(hourData.time);
-                        const temp = `${hourData.temp_c}°C`;
+                        const temp = formatTemperature(hourData.temp_c, hourData.temp_f, units.temperature);
                         const condition = hourData.condition.text.substring(0, 15);
                         const rain = `${hourData.chance_of_rain}%`;
                         
@@ -193,7 +198,8 @@ export class ForecastDisplay {
     static reset(): void {
         this.state = {
             data: null,
-            expandedDayIndex: null
+            expandedDayIndex: null,
+            units: { ...DEFAULT_METRIC_PREFERENCES }
         };
     }
 
