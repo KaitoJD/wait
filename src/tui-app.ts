@@ -2,7 +2,7 @@
 
 import { TUIComponents } from './types';
 import { ScreenManager } from './ui/screen';
-import { Header, Menu, WeatherDisplay, ForecastDisplay, LocationInput, StatusBar } from './ui/components';
+import { Header, Menu, WeatherDisplay, ForecastDisplay, SettingsDisplay, LocationInput, StatusBar } from './ui/components';
 import { EventManager } from './ui/event-manager';
 
 /**
@@ -21,6 +21,7 @@ export class WeatherTUI {
         const menu = Menu.create(screen);
         const weatherDisplay = WeatherDisplay.create(screen);
         const forecastList = ForecastDisplay.create(screen);
+        const settingsList = SettingsDisplay.create(screen);
         const locationInput = LocationInput.create(screen);
         const statusBar = StatusBar.create(screen);
 
@@ -31,6 +32,7 @@ export class WeatherTUI {
             menu,
             weatherDisplay,
             forecastList,
+            settingsList,
             locationInput,
             statusBar
         };
