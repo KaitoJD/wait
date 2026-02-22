@@ -1,5 +1,5 @@
 import blessed from 'blessed';
-import { ApiWeatherResponse, ApiForecastResponse, UnitPreferences, DEFAULT_METRIC_PREFERENCES } from '../../types';
+import { ApiWeatherResponse, ApiForecastResponse, ApiAstronomyResponse, UnitPreferences, DEFAULT_METRIC_PREFERENCES } from '../../types';
 import { formatTemperature, formatWindSpeed, formatPressure, formatVisibility, formatPrecipitation } from '../../utils/formatter';
 
 export class WeatherDisplay {
@@ -113,6 +113,28 @@ PM10: ${aqi.pm10.toFixed(1)} μg/m³
 EPA Index Scale:
   1 = Good | 2 = Moderate | 3 = Unhealthy (Sensitive)
   4 = Unhealthy | 5 = Very Unhealthy | 6 = Hazardous`;
+    }
+
+    static formatAstronomy(data: ApiAstronomyResponse): string {
+        const { location, astronomy } = data;
+        const astro = astronomy.astro;
+
+        const moonUp = astro.is_moon_up === 1 ? 'Yes' : 'No';
+        const sunUp = astro.is_sun_up === 1 ? 'Yes' : 'No';
+
+        return `Location: ${location.name}, ${location.region}, ${location.country}
+
+Astronomy:
+- Sunrise: ${astro.sunrise}
+- Sunset: ${astro.sunset}
+- Moonrise: ${astro.moonrise}
+- Moonset: ${astro.moonset}
+- Moon Phase: ${astro.moon_phase}
+- Moon Illumination: ${astro.moon_illumination}%
+
+Current Status:
+- Sun Up: ${sunUp}
+- Moon Up: ${moonUp}`;
     }
 
     static showLoading(weatherBox: blessed.Widgets.BoxElement): void {
