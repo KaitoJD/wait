@@ -175,4 +175,24 @@ export interface TUIState {
     currentLocation?: string;
 }
 
-export type ViewType = 'menu' | 'weather' | 'airquality' | 'forecast' | 'settings';
+export interface ApiAstronomyResponse {
+    location: {
+        name: string;
+        region: string;
+        country: string;
+    };
+    astronomy: {
+        astro: {
+            sunrise: string;
+            sunset: string;
+            moonrise: string;
+            moonset: string;
+            moon_phase: string;
+            moon_illumination: number;
+            is_moon_up: number;
+            is_sun_up: number;
+        };
+    };
+}
+
+export type ViewType = 'menu' | 'weather' | 'airquality' | 'forecast' | 'settings' | 'astronomy';
