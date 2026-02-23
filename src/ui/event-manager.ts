@@ -62,6 +62,7 @@ export class EventManager {
             onCurrentWeather: () => this.handleCurrentWeather(),
             onAirQuality: () => this.handleAirQuality(),
             onForecast: () => this.handleForecast(),
+            onAstronomy: () => this.handleAstronomy(),
             onSettings: () => this.handleSettings().catch(console.error),
             onExit: () => this.handleExit()
         });
@@ -239,6 +240,46 @@ export class EventManager {
             const errorMessage = error instanceof Error ? error.message : 'Failed to fetch forecast data';
             StatusBar.showError(this.components.statusBar, errorMessage);
             ForecastDisplay.showError(this.components.forecastList, errorMessage);
+        }
+    }
+
+    private async handleAstronomy(): Promise<void> {
+        if (!this.currentLocation) {
+            StatusBar.showError(this.components.statusBar, 'Please set location first');
+            return;
+        }
+
+        try {
+            // Check configuration first
+            const configModule = await import('../utils/config');
+            if (!configModule.isConfigValid()) {
+                const errorMsg = configModule.getConfigErrorMessage();
+                StatusBar.showError(this.components.statusBar, 'Configuration error');
+                WeatherDisplay.showError(this.components.weatherDisplay, errorMsg);
+                return;
+            }
+
+            StatusBar.showLoading(this.components.statusBar, 'astronomy data');
+            
+            // Import weather service and config
+            const weatherModule = await import('../services/weather');
+            
+            const config = configModule.loadConfig();
+            const weatherService = new weatherModule.WeatherService(config);
+            
+            const astronomyData = await weatherService.getRawAstronomy(this.currentLocation);
+            
+            const formattedAstronomy = WeatherDisplay.formatAstronomy(astronomyData);
+            
+            this.components.weatherDisplay.setContent(formattedAstronomy);
+            this.components.screen.render();
+            
+            StatusBar.showSuccess(this.components.statusBar, 'Astronomy data loaded');
+            
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to fetch astronomy data';
+            StatusBar.showError(this.components.statusBar, errorMessage);
+            WeatherDisplay.showError(this.components.weatherDisplay, errorMessage);
         }
     }
 
