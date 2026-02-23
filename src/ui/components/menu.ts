@@ -13,8 +13,9 @@ export class Menu {
                 '2. Current Weather',
                 '3. Air Quality',
                 '4. Weather Forecast (3 days)',
-                '5. Settings',
-                '6. Exit'
+                '5. Astronomy',
+                '6. Settings',
+                '7. Exit'
             ],
             keys: true,
             vi: true,
@@ -43,6 +44,7 @@ export class Menu {
             onCurrentWeather: () => void;
             onAirQuality: () => void;
             onForecast: () => void;
+            onAstronomy: () => void;
             onSettings: () => void;
             onExit: () => void;
         }
@@ -62,9 +64,12 @@ export class Menu {
                     callbacks.onForecast();
                     break;
                 case 4:
-                    callbacks.onSettings();
+                    callbacks.onAstronomy();
                     break;
                 case 5:
+                    callbacks.onSettings();
+                    break;
+                case 6:
                     callbacks.onExit();
                     break;
             }
