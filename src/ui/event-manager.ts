@@ -116,6 +116,12 @@ export class EventManager {
         this.components.screen.render();
     }
 
+    private hideAllDisplays(): void {
+        ForecastDisplay.hide(this.components.forecastList);
+        SettingsDisplay.hide(this.components.settingsList);
+        this.components.weatherDisplay.show();
+    }
+
     private handleEnterLocation(): void {
         StatusBar.showLocationInputHelp(this.components.statusBar);
         LocationInput.show(this.components.locationInput, this.currentLocation);
@@ -126,6 +132,8 @@ export class EventManager {
             StatusBar.showError(this.components.statusBar, 'Please set location first');
             return;
         }
+
+        this.hideAllDisplays();
 
         try {
             // Check configuration first
@@ -166,6 +174,8 @@ export class EventManager {
             StatusBar.showError(this.components.statusBar, 'Please set location first');
             return;
         }
+
+        this.hideAllDisplays();
 
         try {
             // Check configuration first
@@ -217,7 +227,8 @@ export class EventManager {
                 return;
             }
 
-            // Show forecast list and hide weather display
+            // Hide all displays, then switch to forecast view
+            this.hideAllDisplays();
             this.components.weatherDisplay.hide();
             ForecastDisplay.show(this.components.forecastList);
             ForecastDisplay.showLoading(this.components.forecastList);
@@ -248,6 +259,8 @@ export class EventManager {
             StatusBar.showError(this.components.statusBar, 'Please set location first');
             return;
         }
+
+        this.hideAllDisplays();
 
         try {
             // Check configuration first
@@ -284,7 +297,8 @@ export class EventManager {
     }
 
     private async handleSettings(): Promise<void> {
-        // Hide weather display, show settings list
+        // Hide all displays, then switch to settings view
+        this.hideAllDisplays();
         this.components.weatherDisplay.hide();
         SettingsDisplay.show(this.components.settingsList, this.unitPreferences);
         StatusBar.updateMessage(this.components.statusBar, 'Enter: toggle setting | B: back to menu | ↑↓: navigate');
