@@ -1,5 +1,5 @@
 import { ApiClient } from './api';
-import { WeatherData, ForecastData, AirQualityData, ApiWeatherResponse, ApiForecastResponse, WeatherConfig } from '../types';
+import { WeatherData, ForecastData, AirQualityData, ApiWeatherResponse, ApiForecastResponse, ApiAstronomyResponse, WeatherConfig } from '../types';
 
 /**
  * Weather service for fetching current weather and forecast data
@@ -116,6 +116,21 @@ export class WeatherService {
             return response;
         } catch (error) {
             throw new Error(`Failed to fetch weather forecast for "${location}": ${error}`);
+        }
+    }
+
+    /**
+     * Get raw astronomy API response for TUI display
+     */
+    async getRawAstronomy(location: string): Promise<ApiAstronomyResponse> {
+        try {
+            const response = await this.apiClient.get<ApiAstronomyResponse>('/astronomy.json', {
+                q: location
+            });
+
+            return response;
+        } catch (error) {
+            throw new Error(`Failed to fetch astronomy data for "${location}": ${error}`);
         }
     }
 
