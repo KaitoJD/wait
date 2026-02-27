@@ -43,7 +43,7 @@ A terminal weather app with interactive TUI, built with **TypeScript** and **Ble
 2. **Current Weather** — View current temperature, humidity, wind, etc.
 3. **Air Quality** — View air quality index (AQI) for your location
 4. **Weather Forecast** — 3-day forecast with highs/lows
-5. **Astronomy** - View moon phases, sunrise/sunset times, etc.
+5. **Astronomy** — View moon phases, sunrise/sunset times, etc.
 6. **Settings** — Customize units of measurement (metric/imperial)
 7. **Exit** — Quit the app
 
